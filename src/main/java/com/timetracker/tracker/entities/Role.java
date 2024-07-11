@@ -1,6 +1,6 @@
-package com.timetracker.tracker.entity;
+package com.timetracker.tracker.entities;
 
-import com.timetracker.tracker.entity.enums.RoleEnum;
+import com.timetracker.tracker.entities.enums.RoleEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package com.timetracker.tracker.entity;
+package com.timetracker.tracker.entities;
 
 import com.timetracker.tracker.converters.DurationConverter;
 import com.timetracker.tracker.converters.LocalDateTimeConverter;
@@ -23,12 +23,6 @@ public class Record {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "recordIdSeq")
     @SequenceGenerator(name = "recordIdSeq", sequenceName = "record_id_seq", allocationSize = 1)
     private Long id;
-
-    @Column
-    private String title;
-
-    @Column
-    private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false, name = "user_id")

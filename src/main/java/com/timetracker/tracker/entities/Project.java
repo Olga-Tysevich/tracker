@@ -1,4 +1,4 @@
-package com.timetracker.tracker.entity;
+package com.timetracker.tracker.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

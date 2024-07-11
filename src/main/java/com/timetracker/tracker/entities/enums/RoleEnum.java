@@ -1,4 +1,4 @@
-package com.timetracker.tracker.entity.enums;
+package com.timetracker.tracker.entities.enums;
 
 public enum RoleEnum {
     USER_ROLE,
