@@ -1,6 +1,5 @@
 package com.timetracker.tracker.dto.resp;
 
-import com.timetracker.tracker.entities.Project;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,8 +13,8 @@ import java.util.List;
 @Builder
 public class ProjectsForPageDTO {
 
-    private List<Project> projectsForPage;
+    private List<ProjectDTO> projectsForPage;
 
-    private Integer totalItems;
+    private Long totalItems;
 
 }

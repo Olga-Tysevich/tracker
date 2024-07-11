@@ -60,11 +60,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UsersForPageDTO getUsersForPage(GetUsersForPageDTO req) {
-        Page<User> users = Optional.ofNullable(req)
+        Page<User> result = Optional.ofNullable(req)
                 .map(r -> PageRequest.of(r.getPageNum(), r.getCountPerPage()))
                 .map(userRepository::findAll)
                 .orElseThrow(NotFoundException::new);
-        return UserMapper.INSTANCE.toUserList(users.getContent(), users.getTotalElements());
+        return UserMapper.INSTANCE.toUserList(result.getContent(), result.getTotalElements());
     }
 
     private User checkEmail(User user) {

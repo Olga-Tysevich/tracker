@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.sql.Date;
 
 @Data
 @NoArgsConstructor
@@ -14,10 +14,11 @@ import java.time.LocalDateTime;
 public class RecordDTO {
 
     private Long id;
-    private Long userId;
-    private Long projectId;
-    private LocalDateTime startDate;
-    private Integer days;
-    private Integer hours;
-    private Integer minutes;
+    private String userFullName;
+    private String projectName;
+    private String description;
+    private Date startDate;
+    private String duration;
+    private Date endDate;
+
 }

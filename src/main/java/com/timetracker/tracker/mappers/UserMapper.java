@@ -7,6 +7,7 @@ import com.timetracker.tracker.entities.User;
 import com.timetracker.tracker.exceptions.InvalidRole;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -18,7 +19,10 @@ import java.util.stream.Collectors;
 public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    @Mapping(target = "roleSet", ignore = true)
+    @Mappings({
+            @Mapping(target = "id", ignore = true),
+            @Mapping(target = "roleSet", ignore = true)
+    })
     User toEntity(CreateUserDTO userDTO);
 
 

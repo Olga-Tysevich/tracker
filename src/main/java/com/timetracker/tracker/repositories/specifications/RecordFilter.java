@@ -1,4 +1,4 @@
-package com.timetracker.tracker.dto.req;
+package com.timetracker.tracker.repositories.specifications;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,11 +11,7 @@ import java.sql.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class GetRecordsForPageDTO {
-
-    private Integer countPerPage;
-
-    private Integer pageNum;
+public class RecordFilter {
 
     private Long userId;
 
@@ -24,6 +20,5 @@ public class GetRecordsForPageDTO {
     private Date startDate;
 
     private Date endDate;
-
 
 }

@@ -1,15 +1,14 @@
 package com.timetracker.tracker.entities;
 
 import com.timetracker.tracker.converters.DurationConverter;
-import com.timetracker.tracker.converters.LocalDateTimeConverter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Date;
 import java.time.Duration;
-import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -32,12 +31,17 @@ public class Record {
     @JoinColumn(nullable = false, name = "project_id")
     private Project project;
 
+    @Column
+    private String description;
+
     @Column(nullable = false, name = "start_date")
-    @Convert(converter = LocalDateTimeConverter.class)
-    private LocalDateTime startDate;
+    private Date startDate;
 
     @Column(nullable = false)
     @Convert(converter = DurationConverter.class)
     private Duration duration;
+
+    @Column(nullable = false, name = "end_date")
+    private Date endDate;
 
 }

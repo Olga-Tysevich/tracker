@@ -1,7 +1,6 @@
 package com.timetracker.tracker.converters;
 
 import jakarta.persistence.AttributeConverter;
-
 import java.time.Duration;
 import java.util.Objects;
 
@@ -15,4 +14,5 @@ public class DurationConverter implements AttributeConverter<Duration, Long> {
     public Duration convertToEntityAttribute(Long dbData) {
         return Objects.requireNonNullElse(Duration.ofMinutes(dbData), null);
     }
+
 }

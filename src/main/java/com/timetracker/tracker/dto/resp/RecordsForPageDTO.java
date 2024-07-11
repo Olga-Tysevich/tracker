@@ -15,5 +15,5 @@ public class RecordsForPageDTO {
 
     private List<RecordDTO> recordsForPage;
 
-    private Integer totalItems;
+    private Long totalItems;
 }
