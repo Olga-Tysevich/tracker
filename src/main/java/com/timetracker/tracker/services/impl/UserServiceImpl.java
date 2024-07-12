@@ -8,6 +8,7 @@ import com.timetracker.tracker.dto.resp.UsersForPageDTO;
 import com.timetracker.tracker.entities.Role;
 import com.timetracker.tracker.entities.User;
 import com.timetracker.tracker.entities.enums.RoleEnum;
+import com.timetracker.tracker.exceptions.InvalidRole;
 import com.timetracker.tracker.exceptions.NotFoundException;
 import com.timetracker.tracker.exceptions.UserAlreadyExist;
 import com.timetracker.tracker.exceptions.UserNotFoundException;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -41,12 +43,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(Long id) {
-
+        userRepository.deleteById(id);
     }
 
     @Override
     public void updateUser(UpdateUserDTO req) {
-
+        User user = Optional.ofNullable(req)
+                .flatMap(r -> userRepository.findById(r.getId()))
+                .orElseThrow(NotFoundException::new);
+        User forUpdate = UserMapper.INSTANCE.mergeReqAndEntity(user, req);
+        setRoles(forUpdate, req.getRoleNames());
+        userRepository.save(forUpdate);
     }
 
     @Override
@@ -75,11 +82,14 @@ public class UserServiceImpl implements UserService {
     }
 
     private User setRoles(User user, Set<String> roleNames) {
-        Set<Role> roles = roleNames.stream()
-                .map(RoleEnum::valueOf)
-                .map(roleRepository::getByRole)
-                .collect(Collectors.toSet());
-        user.setRoleSet(roles);
-        return user;
+        if (Objects.nonNull(roleNames) & !roleNames.isEmpty()) {
+            Set<Role> roles = roleNames.stream()
+                    .map(RoleEnum::valueOf)
+                    .map(roleRepository::getByRole)
+                    .collect(Collectors.toSet());
+            user.setRoleSet(roles);
+            return user;
+        }
+        throw new InvalidRole();
     }
 }

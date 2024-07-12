@@ -1,6 +1,7 @@
 package com.timetracker.tracker.mappers;
 
 import com.timetracker.tracker.dto.req.CreateUserDTO;
+import com.timetracker.tracker.dto.req.UpdateUserDTO;
 import com.timetracker.tracker.dto.resp.UserDTO;
 import com.timetracker.tracker.dto.resp.UsersForPageDTO;
 import com.timetracker.tracker.entities.User;
@@ -11,6 +12,7 @@ import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -28,6 +30,20 @@ public interface UserMapper {
 
     @Mapping(expression = "java(getRoleNames(user))", target = "roles")
     UserDTO toDTO(User user);
+
+    default User mergeReqAndEntity(User user, UpdateUserDTO req) {
+        if (Objects.nonNull(req.getName())) {
+            user.setName(req.getName());
+        }
+        if (Objects.nonNull(req.getSurname())) {
+            user.setSurname(req.getSurname());
+        }
+        if (Objects.nonNull(req.getPassword()) & Objects.nonNull(req.getPasswordConfirm())
+                & req.getPassword().equals(req.getPasswordConfirm())) {
+            user.setPassword(req.getPassword());
+        }
+        return user;
+    }
 
     default UsersForPageDTO toUserList(List<User> users, Long totalItems) {
         List<UserDTO> result = users.stream()

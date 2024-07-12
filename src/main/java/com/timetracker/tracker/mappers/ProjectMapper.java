@@ -1,6 +1,7 @@
 package com.timetracker.tracker.mappers;
 
 import com.timetracker.tracker.dto.req.CreateProjectDTO;
+import com.timetracker.tracker.dto.req.UpdateProjectDTO;
 import com.timetracker.tracker.dto.resp.ProjectDTO;
 import com.timetracker.tracker.dto.resp.ProjectsForPageDTO;
 import com.timetracker.tracker.entities.Project;
@@ -16,6 +17,12 @@ public interface ProjectMapper {
 
     @Mapping(target = "id", ignore = true)
     Project toEntity(CreateProjectDTO dto);
+
+    default Project mergeReqAndEntity(Project project, UpdateProjectDTO req) {
+        project.setName(req.getName());
+        project.setDescription(req.getDescription());
+        return project;
+    }
 
     ProjectDTO toDTO(Project entity);
 

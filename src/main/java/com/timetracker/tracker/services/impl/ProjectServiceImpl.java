@@ -32,12 +32,16 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public void deleteProject(Long id) {
-
+        projectRepository.deleteById(id);
     }
 
     @Override
     public void updateProject(UpdateProjectDTO req) {
-
+        Project project = Optional.ofNullable(req)
+                .flatMap(r -> projectRepository.findById(r.getId()))
+                .orElseThrow(NotFoundException::new);
+        Project forUpdate = ProjectMapper.INSTANCE.mergeReqAndEntity(project, req);
+        projectRepository.save(forUpdate);
     }
 
     @Override

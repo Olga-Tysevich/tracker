@@ -28,17 +28,14 @@ public class RecordServiceImpl implements RecordService {
     @Override
     public void createRecord(CreateRecordDTO req) {
         Optional.ofNullable(req)
-                .map(RecordMapper.INSTANCE::reqToEntity)
+                .map(RecordMapper.INSTANCE::toEntity)
                 .map(this::checkRecord)
                 .ifPresent(recordRepository::save);
     }
 
     @Override
     public void deleteRecord(Long id) {
-        Optional.ofNullable(id)
-                .map(recordRepository::findById)
-                .orElseThrow(NotFoundException::new)
-                .ifPresent(recordRepository::delete);
+        recordRepository.deleteById(id);
     }
 
     @Override
@@ -46,7 +43,7 @@ public class RecordServiceImpl implements RecordService {
         Record record = Optional.ofNullable(req)
                 .flatMap(r -> recordRepository.findById(r.getId()))
                 .orElseThrow(NotFoundException::new);
-        Record forUpdate = RecordMapper.INSTANCE.reqToEntity(record, req);
+        Record forUpdate = RecordMapper.INSTANCE.mergeReqAndEntity(record, req);
         recordRepository.save(forUpdate);
     }
 

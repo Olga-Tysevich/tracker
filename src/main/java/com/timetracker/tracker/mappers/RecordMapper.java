@@ -32,7 +32,7 @@ public interface RecordMapper {
             @Mapping(expression = "java(createProject(dto.getProjectId()))", target = "project"),
             @Mapping(expression = "java(getEndDate(dto.getStartDate(), dto.getDuration()))", target = "endDate")
     })
-    Record reqToEntity(CreateRecordDTO dto);
+    Record toEntity(CreateRecordDTO dto);
 
     @Mappings({
             @Mapping(expression = "java(getUserFullName(entity.getUser()))", target = "userFullName"),
@@ -42,7 +42,7 @@ public interface RecordMapper {
     RecordDTO toDTO(Record entity);
 
 
-    default Record reqToEntity(Record record, UpdateRecordDTO req) {
+    default Record mergeReqAndEntity(Record record, UpdateRecordDTO req) {
         if (Objects.nonNull(req.getDescription())) {
             record.setDescription(req.getDescription());
         }

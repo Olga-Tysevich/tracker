@@ -2,6 +2,7 @@ package com.timetracker.tracker.repositories;
 
 import com.timetracker.tracker.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -12,5 +13,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> getUserByEmail(String email);
 
     boolean existsByEmail(String email);
+
+    void deleteById(@Nullable Long id);
 
 }

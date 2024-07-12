@@ -13,10 +13,11 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 public class UpdateUserDTO {
+
+    private Long id;
     private String name;
     private String surname;
-    private String email;
     private String password;
     private String passwordConfirm;
-    private Set<Role> roleSet;
+    private Set<String> roleNames;
 }
