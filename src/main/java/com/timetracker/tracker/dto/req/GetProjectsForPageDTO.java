@@ -30,9 +30,4 @@ public class GetProjectsForPageDTO {
     @NotNull(message = PAGE_NUMBER_CANNOT_BE_NULL)
     private Integer pageNum;
 
-    /**
-     * The user ID for filtering projects. May be {@literal null}.
-     */
-    private Long userId;
-
 }
