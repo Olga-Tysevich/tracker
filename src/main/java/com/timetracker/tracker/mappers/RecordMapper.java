@@ -20,20 +20,41 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.timetracker.tracker.utils.Constants.USER_FULL_NAME_PATTERN;
+import static com.timetracker.tracker.utils.Constants.*;
 
+/**
+ * Mapper interface for mapping between entities and DTOs for records.
+ */
 @Mapper
 public interface RecordMapper {
+    /**
+     * Instance of the RecordMapper interface.
+     */
     RecordMapper INSTANCE = Mappers.getMapper(RecordMapper.class);
 
+    /**
+     * Maps CreateRecordDTO to Record entity.
+     *
+     * @param user    The user entity.
+     * @param project The project entity.
+     * @param dto     The CreateRecordDTO object.
+     * @return The mapped Record entity.
+     */
     @Mappings({
             @Mapping(target = "id", ignore = true),
-            @Mapping(expression = "java(createUser(dto.getUserId()))", target = "user"),
-            @Mapping(expression = "java(createProject(dto.getProjectId()))", target = "project"),
-            @Mapping(expression = "java(getEndDate(dto.getStartDate(), dto.getDuration()))", target = "endDate")
+            @Mapping(source = "user", target = "user"),
+            @Mapping(source = "project", target = "project"),
+            @Mapping(expression = "java(getEndDate(dto.getStartDate(), dto.getDuration()))", target = "endDate"),
+            @Mapping(expression = "java(dto.getDescription())", target = "description")
     })
-    Record toEntity(CreateRecordDTO dto);
+    Record toEntity(User user, Project project, CreateRecordDTO dto);
 
+    /**
+     * Maps Record entity to RecordDTO.
+     *
+     * @param entity The Record entity.
+     * @return The mapped RecordDTO.
+     */
     @Mappings({
             @Mapping(expression = "java(getUserFullName(entity.getUser()))", target = "userFullName"),
             @Mapping(expression = "java(getProjectName(entity.getProject()))", target = "projectName"),
@@ -41,7 +62,13 @@ public interface RecordMapper {
     })
     RecordDTO toDTO(Record entity);
 
-
+    /**
+     * Merges update request with Record entity.
+     *
+     * @param record The existing Record entity.
+     * @param req    The UpdateRecordDTO request.
+     * @return The updated Record entity.
+     */
     default Record mergeReqAndEntity(Record record, UpdateRecordDTO req) {
         if (Objects.nonNull(req.getDescription())) {
             record.setDescription(req.getDescription());
@@ -60,6 +87,13 @@ public interface RecordMapper {
         return record;
     }
 
+    /**
+     * Converts a list of Record entities to RecordsForPageDTO.
+     *
+     * @param records    The list of Record entities.
+     * @param totalItems The total number of items.
+     * @return The RecordsForPageDTO object.
+     */
     default RecordsForPageDTO toRecordList(List<Record> records, Long totalItems) {
         List<RecordDTO> result = records.stream()
                 .map(INSTANCE::toDTO)
@@ -67,30 +101,38 @@ public interface RecordMapper {
         return new RecordsForPageDTO(result, totalItems);
     }
 
+    /**
+     * Gets the full name of the user.
+     *
+     * @param user The User entity.
+     * @return The full name of the user.
+     */
     default String getUserFullName(User user) {
         return Optional.ofNullable(user)
                 .map(u -> String.format(USER_FULL_NAME_PATTERN, u.getName(), u.getSurname()))
                 .orElse(StringUtils.EMPTY);
     }
 
+    /**
+     * Gets the project name.
+     *
+     * @param project The Project entity.
+     * @return The name of the project.
+     */
     default String getProjectName(Project project) {
         return Optional.ofNullable(project)
                 .map(Project::getName)
                 .orElse(StringUtils.EMPTY);
     }
 
-    default User createUser(Long userId) {
-        return User.builder()
-                .id(userId)
-                .build();
-    }
-
-    default Project createProject(Long projectId) {
-        return Project.builder()
-                .id(projectId)
-                .build();
-    }
-
+    /**
+     * Calculates the end date based on start date and duration.
+     *
+     * @param startDate The start date.
+     * @param duration  The duration of the record.
+     * @return The calculated end date.
+     * @throws InvalidRecordPeriod if start date or duration is null.
+     */
     default Date getEndDate(Date startDate, Duration duration) {
         if (Objects.nonNull(startDate) && Objects.nonNull(duration)) {
             long millisecondsToAdd = duration.toMillis();
@@ -100,14 +142,20 @@ public interface RecordMapper {
         throw new InvalidRecordPeriod();
     }
 
+    /**
+     * Converts duration to a formatted string.
+     *
+     * @param duration The duration.
+     * @return The formatted duration string.
+     */
     default String getDurationAsString(Duration duration) {
         long days = duration.toDays();
         long hours = duration.minusDays(days).toHours();
         long minutes = duration.minusDays(days).minusHours(hours).toMinutes();
 
-        long weeks = days / 7;
-        days = days % 7;
+        long weeks = days / DAYS_IN_A_WEEK;
+        days = days % DAYS_IN_A_WEEK;
 
-        return String.format("%dw%dd%dh%dm", weeks, days, hours, minutes);
+        return String.format(DURATION_FORMAT_PATTERN, weeks, days, hours, minutes);
     }
 }

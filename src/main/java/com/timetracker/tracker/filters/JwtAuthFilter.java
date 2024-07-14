@@ -24,12 +24,33 @@ import java.io.IOException;
 
 import static com.timetracker.tracker.utils.Constants.*;
 
+/**
+ * This class represents a JWT authentication filter that extends OncePerRequestFilter. *
+ * It is responsible for authenticating JWT tokens and setting the authenticated user details in the SecurityContext.
+ */
 @Component
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
+    /**
+     * JwtProvider bean.
+     * @see com.timetracker.tracker.conf.JwtProvider
+     */
     private final JwtProvider jwtProvider;
+    /**
+     * UserDetailsService bean.
+     * @see com.timetracker.tracker.services.impl.UserDetailsServiceImpl
+     */
     private final UserDetailsService userDetailsService;
 
+    /**
+     * This method filters incoming requests, checks for JWT tokens, validates them, and authenticates the user.
+     *
+     * @param request     the HTTP servlet request.
+     * @param response    the HTTP servlet response.
+     * @param filterChain the FilterChain.
+     * @throws ServletException in case of any servlet related exceptions.
+     * @throws IOException      in case of any IO related exceptions.
+     */
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
@@ -72,6 +93,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
     }
 
+    /**
+     * This method determines whether the filter should be applied to the request.
+     * It excludes the filter for specific URI paths.
+     * @param request the HTTP servlet request.
+     * @return true if the filter should not be applied, false otherwise.
+     */
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         return request.getRequestURI().contains("/api/tracker/auth");

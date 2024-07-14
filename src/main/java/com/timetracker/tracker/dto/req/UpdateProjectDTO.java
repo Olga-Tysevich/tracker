@@ -21,12 +21,12 @@ public class UpdateProjectDTO {
     private Long id;
 
     /**
-     * The project name for updating a project. May be null.
+     * The project name for updating a project. May be {@literal null}.
      */
     private String name;
 
     /**
-     * The project description for updating a project. May be null.
+     * The project description for updating a project. May be {@literal null}.
      */
     private String description;
 

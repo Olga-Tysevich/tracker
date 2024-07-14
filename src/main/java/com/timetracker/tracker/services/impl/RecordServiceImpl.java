@@ -5,14 +5,20 @@ import com.timetracker.tracker.dto.req.CreateRecordDTO;
 import com.timetracker.tracker.dto.req.GetRecordsForPageDTO;
 import com.timetracker.tracker.dto.req.UpdateRecordDTO;
 import com.timetracker.tracker.dto.resp.RecordsForPageDTO;
+import com.timetracker.tracker.entities.Project;
 import com.timetracker.tracker.entities.Record;
+import com.timetracker.tracker.entities.User;
 import com.timetracker.tracker.exceptions.NotFoundException;
+import com.timetracker.tracker.exceptions.UserNotFoundException;
 import com.timetracker.tracker.mappers.RecordMapper;
+import com.timetracker.tracker.repositories.ProjectRepository;
 import com.timetracker.tracker.repositories.RecordRepository;
+import com.timetracker.tracker.repositories.UserRepository;
 import com.timetracker.tracker.repositories.specifications.RecordFilter;
 import com.timetracker.tracker.repositories.specifications.RecordSpecification;
 import com.timetracker.tracker.services.RecordService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -20,19 +26,24 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.timetracker.tracker.utils.Constants.PROJECT_NOT_FOUND;
 import static com.timetracker.tracker.utils.Constants.REQ_CANNOT_BE_NULL;
 
 @Service
 @RequiredArgsConstructor
 public class RecordServiceImpl implements RecordService {
     private final RecordRepository recordRepository;
+    private final UserRepository userRepository;
+    private final ProjectRepository projectRepository;
 
     @Override
     public void createRecord(CreateRecordDTO req) {
         if (Objects.isNull(req)) {
             throw new IllegalArgumentException(REQ_CANNOT_BE_NULL);
         }
-        Record record = RecordMapper.INSTANCE.toEntity(req);
+        User user = userRepository.findById(req.getUserId()).orElseThrow(UserNotFoundException::new);
+        Project project = projectRepository.findById(req.getProjectId()).orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
+        Record record = RecordMapper.INSTANCE.toEntity(user, project, req);
         checkRecord(record);
         recordRepository.save(record);
     }

@@ -11,21 +11,53 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
+/**
+ * Mapper interface for mapping Project entities and DTOs.
+ */
 @Mapper
 public interface ProjectMapper {
+    /**
+     * Singleton instance of the ProjectMapper interface.
+     */
     ProjectMapper INSTANCE = Mappers.getMapper(ProjectMapper.class);
 
+    /**
+     * Maps a CreateProjectDTO to a Project entity.
+     *
+     * @param dto the CreateProjectDTO to map.
+     * @return the mapped Project entity.
+     */
     @Mapping(target = "id", ignore = true)
     Project toEntity(CreateProjectDTO dto);
 
+    /**
+     * Merges attributes of an UpdateProjectDTO into a Project entity.
+     *
+     * @param project the existing Project entity.
+     * @param req     the UpdateProjectDTO with updated attributes.
+     * @return the updated Project entity.
+     */
     default Project mergeReqAndEntity(Project project, UpdateProjectDTO req) {
         project.setName(req.getName());
         project.setDescription(req.getDescription());
         return project;
     }
 
+    /**
+     * Maps a Project entity to a ProjectDTO.
+     *
+     * @param entity the Project entity to map.
+     * @return the mapped ProjectDTO.
+     */
     ProjectDTO toDTO(Project entity);
 
+    /**
+     * Maps a list of Project entities to ProjectsForPageDTO including total items count.
+     *
+     * @param projects   the list of Project entities.
+     * @param totalItems the total count of items.
+     * @return the mapped ProjectsForPageDTO.
+     */
     default ProjectsForPageDTO toProjectList(List<Project> projects, Long totalItems) {
         List<ProjectDTO> result = projects.stream()
                 .map(INSTANCE::toDTO)

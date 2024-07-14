@@ -48,7 +48,10 @@ public class Constants {
     public static final String PROJECT_LIST_CANNOT_BE_NULL = "Project list cannot be null!";
     public static final String RECORD_LIST_CANNOT_BE_NULL = "Record list cannot be null!";
     public static final String TOTAL_ITEMS_CANNOT_BE_NULL = "Total items cannot be null!";
+    public static final String PROJECT_NOT_FOUND = "Project not Found!";
+    public static final String DURATION_FORMAT_PATTERN = "%dw%dd%dh%dm";
     public static final long MIN_ID = 1L;
+    public static final int DAYS_IN_A_WEEK = 7;
     public static final String[] IGNORE_URLS = {"/swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**"};
 
     //exceptions

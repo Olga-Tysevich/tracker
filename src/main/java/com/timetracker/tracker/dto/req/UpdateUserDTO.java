@@ -22,27 +22,27 @@ public class UpdateUserDTO {
     private Long id;
 
     /**
-     * The username for updating a user. May be null.
+     * The username for updating a user. May be {@literal null}.
      */
     private String name;
 
     /**
-     * The user surname for updating a user. May be null.
+     * The user surname for updating a user. May be {@literal null}.
      */
     private String surname;
 
     /**
-     * The password for updating a user. May be null.
+     * The password for updating a user. May be {@literal null}.
      * If not zero, then the passwordConfirm field must be filled in.
      */
     private String password;
 
     /**
-     * The password confirmation field for updating a user. May be null.
+     * The password confirmation field for updating a user. May be {@literal null}.
      */
     private String passwordConfirm;
     /**
-     * The role set for updating a user. May be null or empty.
+     * The role set for updating a user. May be {@literal null} or empty.
      */
     private Set<String> roleNames;
 }

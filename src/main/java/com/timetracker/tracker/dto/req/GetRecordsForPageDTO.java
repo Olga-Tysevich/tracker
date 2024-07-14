@@ -33,22 +33,22 @@ public class GetRecordsForPageDTO {
     private Integer pageNum;
 
     /**
-     * The user ID for filtering records. May be null.
+     * The user ID for filtering records. May be {@literal null}.
      */
     private Long userId;
 
     /**
-     * The project ID for filtering records. May be null.
+     * The project ID for filtering records. May be {@literal null}.
      */
     private Long projectId;
 
     /**
-     * The start date for filtering records. May be null.
+     * The start date for filtering records. May be {@literal null}.
      */
     private Date startDate;
 
     /**
-     * The end date for filtering records. May be null.
+     * The end date for filtering records. May be {@literal null}.
      */
     private Date endDate;
 

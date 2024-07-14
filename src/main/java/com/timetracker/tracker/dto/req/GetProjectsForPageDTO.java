@@ -31,7 +31,7 @@ public class GetProjectsForPageDTO {
     private Integer pageNum;
 
     /**
-     * The user ID for filtering projects. May be null.
+     * The user ID for filtering projects. May be {@literal null}.
      */
     private Long userId;
 

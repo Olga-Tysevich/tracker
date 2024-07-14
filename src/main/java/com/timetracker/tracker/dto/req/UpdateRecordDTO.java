@@ -26,17 +26,17 @@ public class UpdateRecordDTO {
     private Long id;
 
     /**
-     * The record start date for updating a record. May be null.
+     * The record start date for updating a record. May be {@literal null}.
      */
     private Date startDate;
 
     /**
-     * The record description for updating a record. May be null.
+     * The record description for updating a record. May be {@literal null}.
      */
     private String description;
 
     /**
-     * The record duration for updating a record. May be null.
+     * The record duration for updating a record. May be {@literal null}.
      */
     @JsonDeserialize(using = DurationDeserializer.class)
     private Duration duration;
