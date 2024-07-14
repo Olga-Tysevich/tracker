@@ -36,7 +36,7 @@ public class CreateRecordDTO {
     @NotBlank(message = DESCRIPTION_CANNOT_BE_EMPTY)
     private String description;
 
-    @NotNull(message = DATE_CANNOT_BE_NULL)
+    @NotNull(message = START_DATE_CANNOT_BE_NULL)
     @DateTimeFormat(pattern = DATE_PATTERN)
     private Date startDate;
 

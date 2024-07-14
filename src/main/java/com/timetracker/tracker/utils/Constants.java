@@ -15,14 +15,18 @@ public class Constants {
     public static final String NAME_CANNOT_BE_EMPTY = "Name cannot be null or empty!";
     public static final String SURNAME_CANNOT_BE_NULL_OR_EMPTY = "Surname cannot be null or empty!";
     public static final String EMAIL_CANNOT_BE_NULL_OR_EMPTY = "Email cannot be null or empty!";
+    public static final String REFRESH_TOKEN_CANNOT_BE_NULL_OR_EMPTY = "Refresh token cannot be null or empty!";
     public static final String USER_ID_CANNOT_BE_NULL = "User ID cannot be null!";
+    public static final String USER_CANNOT_BE_NULL = "User cannot be null!";
     public static final String MIN_USER_ID_MASSAGE = "The user ID must be greater than or equal to 1!";
     public static final String PROJECT_ID_CANNOT_BE_NULL = "Project ID cannot be null!";
+    public static final String ROLE_ID_CANNOT_BE_NULL = "Role ID cannot be null!";
+    public static final String ROLE_CANNOT_BE_NULL = "Role cannot be null!";
+    public static final String PROJECT_CANNOT_BE_NULL = "Project cannot be null!";
     public static final String PROJECT_NAME_CANNOT_BE_NULL = "Project name cannot be null!";
     public static final String PROJECT_DESCRIPTION_CANNOT_BE_NULL = "Project description cannot be null!";
     public static final String RECORD_ID_CANNOT_BE_NULL = "Record ID cannot be null!";
     public static final String MIN_PROJECT_ID_MESSAGE = "The project ID must be greater than or equal to 1!";
-    public static final String DATE_CANNOT_BE_NULL = "Date cannot be null!";
     public static final String START_DATE_CANNOT_BE_NULL = "Start date cannot be null!";
     public static final String END_DATE_CANNOT_BE_NULL = "End date cannot be null!";
     public static final String DATE_PATTERN = "yyyy-MM-dd";
@@ -46,6 +50,18 @@ public class Constants {
     public static final String TOTAL_ITEMS_CANNOT_BE_NULL = "Total items cannot be null!";
     public static final long MIN_ID = 1L;
     public static final String[] IGNORE_URLS = {"/swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**"};
+
+    //exceptions
+    public static final String INVALID_RECORD_PERIOD = "Invalid record period!";
+    public static final String INVALID_REFRESH_TOKEN = "Invalid refresh token!";
+    public static final String INVALID_USER_ROLE = "Invalid user role!";
+    public static final String NOT_FOUND = "Not found!";
+    public static final String OBJECT_ALREADY_EXIST = "Object already exist!";
+    public static final String PASSWORDS_MISMATCH = "Passwords mismatch!";
+    public static final String USER_IS_NOT_AUTHORIZED = "User is not authorized!";
+    public static final String Unsupported_DTO_MESSAGE = "This method does not support this type of dto!";
+    public static final String USER_ALREADY_EXIST = "User already exist!";
+    public static final String USER_NOT_FOUND = "User not found!";
 
     private Constants() {
     }

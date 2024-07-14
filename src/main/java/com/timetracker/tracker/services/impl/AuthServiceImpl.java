@@ -1,10 +1,9 @@
 package com.timetracker.tracker.services.impl;
 
-import com.timetracker.tracker.conf.JwtProvider;
 import com.timetracker.tracker.dto.req.UserLoginDTO;
 import com.timetracker.tracker.dto.resp.LoggedUserDTO;
 import com.timetracker.tracker.entities.User;
-import com.timetracker.tracker.exceptions.WrongPasswordException;
+import com.timetracker.tracker.exceptions.PasswordMismatchException;
 import com.timetracker.tracker.services.AuthService;
 import com.timetracker.tracker.services.JwtService;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +31,7 @@ public class AuthServiceImpl implements AuthService {
         User user = (User) userDetailsService.loadUserByUsername(req.getEmail());
 
         if (!passwordEncoder.matches(req.getPassword(), user.getPassword())) {
-            throw new WrongPasswordException();
+            throw new PasswordMismatchException();
         }
 
         return jwtService.generatePairOfTokens(user);

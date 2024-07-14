@@ -1,6 +1,10 @@
 package com.timetracker.tracker.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,6 +14,11 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.timetracker.tracker.utils.Constants.*;
+
+/**
+ * This class represents a User entity with its attributes.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,18 +30,25 @@ public class User implements UserDetails, Serializable {
     @Column
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userIdSeq")
     @SequenceGenerator(name = "userIdSeq", sequenceName = "user_id_seq", allocationSize = 1)
+    @NotNull(message = USER_ID_CANNOT_BE_NULL)
     private Long id;
 
     @Column(nullable = false)
+    @NotBlank(message = NAME_CANNOT_BE_EMPTY)
     private String name;
 
     @Column(nullable = false)
+    @NotBlank(message = SURNAME_CANNOT_BE_NULL_OR_EMPTY)
     private String surname;
 
     @Column(nullable = false, unique = true)
+    @NotBlank(message = EMAIL_CANNOT_BE_NULL_OR_EMPTY)
+    @Pattern(regexp = REGEXP_EMAIL, message = INVALID_EMAIL_MESSAGE)
     private String email;
 
     @Column(nullable = false)
+    @NotBlank(message = PASSWORD_CANNOT_BE_NULL_OR_EMPTY)
+    @Pattern(regexp = PASSWORD_PATTERN, message = INVALID_PASSWORD_MESSAGE)
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -43,6 +59,7 @@ public class User implements UserDetails, Serializable {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @Builder.Default
+    @NotEmpty(message = THE_ROLE_SET_CANNOT_BE_EMPTY)
     private Set<Role> roleSet = new HashSet<>();
 
     @Override
