@@ -1,5 +1,8 @@
 package com.timetracker.tracker.utils;
 
+/**
+ * The application constants class.
+ */
 public class Constants {
     public static final String USER_FULL_NAME_PATTERN = "%s %s";
     public static final String ID_CLAIM = "id";
@@ -54,9 +57,14 @@ public class Constants {
     public static final String DURATION_FORMAT_PATTERN = "%dw%dd%dh%dm";
     public static final long MIN_ID = 1L;
     public static final int DAYS_IN_A_WEEK = 7;
+    public static final int HOURS_IN_A_DAY = 24;
+    public static final long MINUTES_IN_A_HOURS = 60L;
     public static final String[] IGNORE_URLS = {"/swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**"};
-
-    //exceptions
+    public static final char[] DURATION_TOKENS = {'w', 'd', 'h', 'm'};
+    public static final char WEEK_TOKEN = 'w';
+    public static final char DAY_TOKEN = 'd';
+    public static final char HOUR_TOKEN = 'h';
+    public static final char MINUTES_TOKEN = 'm';
     public static final String INVALID_RECORD_PERIOD = "Invalid record period!";
     public static final String INVALID_REFRESH_TOKEN = "Invalid refresh token!";
     public static final String INVALID_USER_ROLE = "Invalid user role!";
