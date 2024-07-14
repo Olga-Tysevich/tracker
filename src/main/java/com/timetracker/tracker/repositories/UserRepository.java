@@ -9,6 +9,7 @@ import java.util.Optional;
 
 /**
  * This interface provides methods for accessing and manipulating User entities in the database.
+ *
  * @see com.timetracker.tracker.entities.User
  */
 @Repository
@@ -16,6 +17,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     /**
      * Retrieves a user by their email address.
+     *
      * @param email The email address of the user to retrieve.
      * @return An Optional containing the user with the specified email, if found.
      */
@@ -23,6 +25,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     /**
      * Checks if a user exists with the given email address.
+     *
      * @param email The email address to check.
      * @return true if a user with the email address exists, false otherwise.
      */
@@ -30,6 +33,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     /**
      * Deletes a user by their ID.
+     *
      * @param id The ID of the user to delete. Must not be {@literal null}.
      */
     void deleteById(@Nullable Long id);

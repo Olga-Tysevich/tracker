@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  * This interface provides methods for accessing and manipulating RefreshToken entities in the database.
+ *
  * @see com.timetracker.tracker.entities.RefreshToken
  */
 @Repository

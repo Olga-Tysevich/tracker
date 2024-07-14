@@ -30,6 +30,7 @@ public interface UserMapper {
 
     /**
      * Maps a CreateUserDTO to a User entity, ignoring the id and roleSet fields.
+     *
      * @param userDTO The CreateUserDTO to map to a User entity.
      * @return The mapped User entity.
      */
@@ -41,6 +42,7 @@ public interface UserMapper {
 
     /**
      * Maps a User entity to a UserDTO, extracting role names from the user's roleSet.
+     *
      * @param user The User entity to map to a UserDTO.
      * @return The mapped UserDTO.
      */
@@ -49,8 +51,9 @@ public interface UserMapper {
 
     /**
      * Merges the fields of an UpdateUserDTO with an existing User entity.
+     *
      * @param user The existing User entity.
-     * @param req The UpdateUserDTO containing fields to merge.
+     * @param req  The UpdateUserDTO containing fields to merge.
      * @return The merged User entity.
      * @throws PasswordMismatchException if password and passwordConfirm do not match.
      */
@@ -72,7 +75,8 @@ public interface UserMapper {
 
     /**
      * Maps a list of User entities to a UsersForPageDTO with total items count.
-     * @param users The list of User entities.
+     *
+     * @param users      The list of User entities.
      * @param totalItems The total number of items.
      * @return The mapped UsersForPageDTO.
      */
@@ -85,6 +89,7 @@ public interface UserMapper {
 
     /**
      * Extracts role names from the User's roleSet.
+     *
      * @param user The User entity.
      * @return A set of role names as strings.
      * @throws InvalidRole if the roleSet is null.

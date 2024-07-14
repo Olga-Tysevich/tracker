@@ -18,7 +18,6 @@ import com.timetracker.tracker.repositories.specifications.RecordFilter;
 import com.timetracker.tracker.repositories.specifications.RecordSpecification;
 import com.timetracker.tracker.services.RecordService;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.ObjectNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -29,13 +28,40 @@ import java.util.Optional;
 import static com.timetracker.tracker.utils.Constants.PROJECT_NOT_FOUND;
 import static com.timetracker.tracker.utils.Constants.REQ_CANNOT_BE_NULL;
 
+/**
+ * This class implements the RecordService interface and contains methods for creating, deleting, updating, and retrieving records.
+ *
+ * @see com.timetracker.tracker.services.RecordService
+ */
 @Service
 @RequiredArgsConstructor
 public class RecordServiceImpl implements RecordService {
+    /**
+     * RecordRepository bean.
+     *
+     * @see com.timetracker.tracker.repositories.RecordRepository
+     */
     private final RecordRepository recordRepository;
+    /**
+     * UserRepository bean.
+     *
+     * @see com.timetracker.tracker.repositories.UserRepository
+     */
     private final UserRepository userRepository;
+    /**
+     * ProjectRepository bean.
+     *
+     * @see com.timetracker.tracker.repositories.ProjectRepository
+     */
     private final ProjectRepository projectRepository;
 
+    /**
+     * Creates a new record.
+     *
+     * @param req the create record request.
+     * @throws IllegalArgumentException if the request is {@literal null}.
+     * @see com.timetracker.tracker.dto.req.CreateRecordDTO
+     */
     @Override
     public void createRecord(CreateRecordDTO req) {
         if (Objects.isNull(req)) {
@@ -48,11 +74,23 @@ public class RecordServiceImpl implements RecordService {
         recordRepository.save(record);
     }
 
+    /**
+     * Deletes a record by its ID.
+     *
+     * @param id the ID of the record to delete.
+     */
     @Override
     public void deleteRecord(Long id) {
         Optional.ofNullable(id).ifPresent(recordRepository::deleteById);
     }
 
+    /**
+     * Updates an existing record.
+     *
+     * @param req the update record request.
+     * @throws IllegalArgumentException if the request is {@literal null}.
+     * @see com.timetracker.tracker.dto.req.UpdateRecordDTO
+     */
     @Override
     public void updateRecord(UpdateRecordDTO req) {
         if (Objects.isNull(req)) {
@@ -64,6 +102,14 @@ public class RecordServiceImpl implements RecordService {
         recordRepository.save(forUpdate);
     }
 
+    /**
+     * Retrieves a list of records for a specific page.
+     *
+     * @param req the request for getting records for a page.
+     * @return the list of records for the specified page.
+     * @throws NotFoundException if the request is {@literal null}.
+     * @see com.timetracker.tracker.dto.req.GetRecordsForPageDTO
+     */
     @Override
     public RecordsForPageDTO getRecordsForPage(GetRecordsForPageDTO req) {
         Page<Record> result = Optional.ofNullable(req)
@@ -76,6 +122,12 @@ public class RecordServiceImpl implements RecordService {
         return RecordMapper.INSTANCE.toRecordList(result.getContent(), result.getTotalElements());
     }
 
+    /**
+     * Checks if a record already exists with the same start date, project ID, and user ID, and updates it.
+     *
+     * @param record the record to check.
+     * @see com.timetracker.tracker.entities.Record
+     */
     private void checkRecord(Record record) {
         Record exist = recordRepository.getByStartDateAndProjectIdAndUserId(record.getStartDate(),
                 record.getProject().getId(), record.getUser().getId());

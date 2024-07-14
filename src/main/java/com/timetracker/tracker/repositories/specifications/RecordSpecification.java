@@ -4,13 +4,12 @@ import com.timetracker.tracker.entities.Project_;
 import com.timetracker.tracker.entities.Record;
 import com.timetracker.tracker.entities.Record_;
 import com.timetracker.tracker.entities.User_;
+import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import jakarta.persistence.criteria.Predicate;
 
 /**
  * The class representing a specification for searching records based on a provided filter.
@@ -19,6 +18,7 @@ public class RecordSpecification {
 
     /**
      * Creates a specification based on the provided filter.
+     *
      * @param filter The filter used to search for records.
      * @return A Specification object representing the search criteria.
      */

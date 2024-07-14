@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  * This interface provides methods for accessing and manipulating Role entities in the database.
+ *
  * @see com.timetracker.tracker.entities.Role
  */
 @Repository
@@ -14,6 +15,7 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
 
     /**
      * Retrieves a Role entity by RoleEnum value.
+     *
      * @param role The role of the user associated with the role enum.
      * @return The user Role from database.
      */

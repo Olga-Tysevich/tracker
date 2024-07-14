@@ -27,15 +27,42 @@ import java.util.stream.Collectors;
 import static com.timetracker.tracker.utils.Constants.REQ_CANNOT_BE_NULL;
 
 /**
+ * This class implements the UserService interface and contains methods for creating, deleting, updating, and retrieving users.
  *
+ * @see com.timetracker.tracker.services.UserService
  */
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+    /**
+     * UserRepository bean.
+     *
+     * @see com.timetracker.tracker.repositories.UserRepository
+     */
     private final UserRepository userRepository;
+    /**
+     * RoleRepository bean.
+     *
+     * @see com.timetracker.tracker.repositories.RoleRepository
+     */
     private final RoleRepository roleRepository;
+    /**
+     * PasswordEncoder bean.
+     *
+     * @see com.timetracker.tracker.conf.WebSecurityConfig
+     */
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * Method to create a new user.
+     *
+     * @param req The request object containing user information.
+     * @throws IllegalArgumentException  if the request is null.
+     * @throws UserAlreadyExist          if the user's email already exists in the database.
+     * @throws PasswordMismatchException if the password and password confirmation do not match.
+     * @throws InvalidRole               if the user's role is invalid.
+     * @see com.timetracker.tracker.dto.req.CreateUserDTO
+     */
     @Override
     public void createUser(CreateUserDTO req) {
         if (Objects.isNull(req)) {
@@ -49,11 +76,24 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    /**
+     * Method to delete a user by id.
+     *
+     * @param id The id of the user to be deleted.
+     */
     @Override
     public void deleteUser(Long id) {
         Optional.ofNullable(id).ifPresent(userRepository::deleteById);
     }
 
+    /**
+     * Method to update an existing user.
+     *
+     * @param req The request object containing user information to be updated.
+     * @throws IllegalArgumentException if the request is null.
+     * @throws NotFoundException        if the user is not found.
+     * @see com.timetracker.tracker.dto.req.UpdateUserDTO
+     */
     @Override
     public void updateUser(UpdateUserDTO req) {
         if (Objects.isNull(req)) {
@@ -68,6 +108,14 @@ public class UserServiceImpl implements UserService {
         userRepository.save(forUpdate);
     }
 
+    /**
+     * Method to retrieve a user by id.
+     *
+     * @param id The id of the user to retrieve.
+     * @return The user DTO object.
+     * @throws UserNotFoundException if the user is not found.
+     * @see com.timetracker.tracker.dto.resp.UserDTO
+     */
     @Override
     public UserDTO getUserById(Long id) {
         return Optional.ofNullable(id)
@@ -77,6 +125,14 @@ public class UserServiceImpl implements UserService {
                 .orElse(null);
     }
 
+    /**
+     * Method to retrieve a list of users for a specified page.
+     *
+     * @param req The request object containing pagination information.
+     * @return The response object containing user list for the page.
+     * @throws NotFoundException if the page is not found.
+     * @see com.timetracker.tracker.dto.resp.UsersForPageDTO
+     */
     @Override
     public UsersForPageDTO getUsersForPage(GetUsersForPageDTO req) {
         Page<User> result = Optional.ofNullable(req)
@@ -86,19 +142,41 @@ public class UserServiceImpl implements UserService {
         return UserMapper.INSTANCE.toUserList(result.getContent(), result.getTotalElements());
     }
 
+    /**
+     * Method to check if the user's email already exists in the database.
+     *
+     * @param user The user entity to check the email.
+     * @throws UserAlreadyExist if the user's email already exists in the database.
+     * @see com.timetracker.tracker.entities.User
+     */
     private void checkEmail(User user) {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new UserAlreadyExist();
         }
     }
 
+    /**
+     * Method to check if the password and password confirmation match.
+     *
+     * @param password        The user's password.
+     * @param passwordConfirm The password confirmation.
+     * @throws PasswordMismatchException if the password and password confirmation do not match.
+     */
     private void checkPassword(String password, String passwordConfirm) {
         if (!Objects.requireNonNull(password).equals(passwordConfirm)) {
             throw new PasswordMismatchException();
         }
     }
 
-
+    /**
+     * Method to set roles for the user based on the role names provided.
+     *
+     * @param user      The user entity to set the roles.
+     * @param roleNames The set of role names to set for the user.
+     * @throws InvalidRole if the user's role is invalid.
+     * @see com.timetracker.tracker.entities.User
+     * @see com.timetracker.tracker.entities.Role
+     */
     private void setRoles(User user, Set<String> roleNames) {
         if (Objects.nonNull(roleNames) & !roleNames.isEmpty()) {
             Set<Role> roles = roleNames.stream()

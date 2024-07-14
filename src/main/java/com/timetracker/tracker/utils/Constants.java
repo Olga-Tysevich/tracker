@@ -8,6 +8,7 @@ public class Constants {
     public static final String TOKEN_TYPE = "Bearer ";
     public static final String TOKEN_HEADER = "Authorization";
     public static final String TOKEN_WAS_STOLEN_MESSAGE = "Token was stolen!";
+    public static final String TOKEN_CANNOT_BE_NULL_OR_EMPTY = "Token cannot be null or empty!";
     public static final String REQ_CANNOT_BE_NULL = "UpdateUserDTO cannot be null";
     public static final String FORBIDDEN_KEY = "Forbidden";
     public static final String FORBIDDEN_MESSAGE = "You do not have permission to access this resource";
@@ -25,6 +26,7 @@ public class Constants {
     public static final String PROJECT_CANNOT_BE_NULL = "Project cannot be null!";
     public static final String PROJECT_NAME_CANNOT_BE_NULL = "Project name cannot be null!";
     public static final String PROJECT_DESCRIPTION_CANNOT_BE_NULL = "Project description cannot be null!";
+    public static final String PROJECT_ALREADY_EXIST = "Project already exist";
     public static final String RECORD_ID_CANNOT_BE_NULL = "Record ID cannot be null!";
     public static final String MIN_PROJECT_ID_MESSAGE = "The project ID must be greater than or equal to 1!";
     public static final String START_DATE_CANNOT_BE_NULL = "Start date cannot be null!";

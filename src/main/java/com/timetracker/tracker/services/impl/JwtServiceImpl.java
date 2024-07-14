@@ -16,13 +16,39 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import static com.timetracker.tracker.utils.Constants.TOKEN_CANNOT_BE_NULL_OR_EMPTY;
+
+/**
+ * Service class that provides implementation for generating and regenerating JWT tokens.
+ */
 @Service
 @RequiredArgsConstructor
 public class JwtServiceImpl implements JwtService {
+    /**
+     * RefreshTokenRepository bean.
+     *
+     * @see com.timetracker.tracker.repositories.RefreshTokenRepository
+     */
     private final RefreshTokenRepository refreshTokenRepository;
+    /**
+     * JwtProvider bean.
+     *
+     * @see com.timetracker.tracker.conf.JwtProvider
+     */
     private final JwtProvider jwtProvider;
+    /**
+     * UserRepository bean.
+     *
+     * @see com.timetracker.tracker.repositories.UserRepository
+     */
     private final UserRepository userRepository;
 
+    /**
+     * Generates a pair of access and refresh tokens for the given user.
+     *
+     * @param user The user for whom tokens are generated.
+     * @return LoggedUserDTO containing the access token, refresh token, and user details.
+     */
     @Override
     public LoggedUserDTO generatePairOfTokens(User user) {
         String accessToken = jwtProvider.generateAccessToken(user);
@@ -35,9 +61,15 @@ public class JwtServiceImpl implements JwtService {
                 .build();
     }
 
+    /**
+     * Regenerates a pair of access and refresh tokens using the provided refresh token.
+     *
+     * @param refreshToken The refresh token used for token regeneration.
+     * @return LoggedUserDTO containing the new access token, refresh token, and user details.
+     */
     @Override
-    public LoggedUserDTO regeneratePairOfTokens(@Valid @NotBlank(message = "Token cannot be null or empty!")
-                                                    String refreshToken) {
+    public LoggedUserDTO regeneratePairOfTokens(@Valid @NotBlank(message = TOKEN_CANNOT_BE_NULL_OR_EMPTY)
+                                                String refreshToken) {
         if (!jwtProvider.validateRefreshToken(refreshToken)) {
             throw new InvalidRefreshTokenException();
         }
@@ -47,8 +79,14 @@ public class JwtServiceImpl implements JwtService {
         return generatePairOfTokens(user);
     }
 
+    /**
+     * Saves the refresh token for the given email.
+     *
+     * @param email The email of the user for whom the token is saved.
+     * @param token The refresh token to be saved.
+     */
     private void saveRefreshToken(@Valid @Email String email,
-                                  @Valid @NotBlank(message = "Token cannot be null or empty!") String token) {
+                                  @Valid @NotBlank(message = TOKEN_CANNOT_BE_NULL_OR_EMPTY) String token) {
         if (!userRepository.existsByEmail(email)) {
             throw new UserNotFoundException();
         }
