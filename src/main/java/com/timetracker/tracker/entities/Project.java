@@ -6,13 +6,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Table(name = "projects")
 @Entity
-public class Project {
+public class Project implements Serializable {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "projectIdSeq")

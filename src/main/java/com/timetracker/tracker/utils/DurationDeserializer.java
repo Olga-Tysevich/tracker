@@ -11,7 +11,7 @@ import java.time.Duration;
 public class DurationDeserializer extends JsonDeserializer<Duration> {
 
     @Override
-    public Duration deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {
+    public Duration deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         long minutes = 0;
         String source = p.getText();
 

@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+
+import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
@@ -13,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Table(name = "roles")
 @Entity
-public class Role {
+public class Role implements GrantedAuthority, Serializable {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "roleIdSeq")
@@ -24,4 +27,8 @@ public class Role {
     @Column(nullable = false, columnDefinition = "enum(USER_ROLE, ADMIN_ROLE)")
     private RoleEnum role;
 
+    @Override
+    public String getAuthority() {
+        return role.name();
+    }
 }

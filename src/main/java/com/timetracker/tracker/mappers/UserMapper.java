@@ -6,6 +6,7 @@ import com.timetracker.tracker.dto.resp.UserDTO;
 import com.timetracker.tracker.dto.resp.UsersForPageDTO;
 import com.timetracker.tracker.entities.User;
 import com.timetracker.tracker.exceptions.InvalidRole;
+import com.timetracker.tracker.exceptions.PasswordMismatchException;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -38,8 +39,10 @@ public interface UserMapper {
         if (Objects.nonNull(req.getSurname())) {
             user.setSurname(req.getSurname());
         }
-        if (Objects.nonNull(req.getPassword()) & Objects.nonNull(req.getPasswordConfirm())
-                & req.getPassword().equals(req.getPasswordConfirm())) {
+        if (Objects.nonNull(req.getPassword()) & Objects.nonNull(req.getPasswordConfirm())) {
+            if (!req.getPassword().equals(req.getPasswordConfirm())) {
+                throw new PasswordMismatchException();
+            }
             user.setPassword(req.getPassword());
         }
         return user;

@@ -15,7 +15,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
+
+import static com.timetracker.tracker.utils.Constants.REQ_CANNOT_BE_NULL;
 
 @Service
 @RequiredArgsConstructor
@@ -24,21 +27,25 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public void createProject(CreateProjectDTO req) {
-        Optional.ofNullable(req)
-                .map(ProjectMapper.INSTANCE::toEntity)
-                .map(this::checkProjectName)
-                .ifPresent(projectRepository::save);
+        if (Objects.isNull(req)) {
+            throw new IllegalArgumentException(REQ_CANNOT_BE_NULL);
+        }
+        Project project = ProjectMapper.INSTANCE.toEntity(req);
+        checkProjectName(project);
+        projectRepository.save(project);
     }
 
     @Override
     public void deleteProject(Long id) {
-        projectRepository.deleteById(id);
+        Optional.ofNullable(id).ifPresent(projectRepository::deleteById);
     }
 
     @Override
     public void updateProject(UpdateProjectDTO req) {
-        Project project = Optional.ofNullable(req)
-                .flatMap(r -> projectRepository.findById(r.getId()))
+        if (Objects.isNull(req)) {
+            throw new IllegalArgumentException(REQ_CANNOT_BE_NULL);
+        }
+        Project project = projectRepository.findById(req.getId())
                 .orElseThrow(NotFoundException::new);
         Project forUpdate = ProjectMapper.INSTANCE.mergeReqAndEntity(project, req);
         projectRepository.save(forUpdate);
@@ -53,10 +60,9 @@ public class ProjectServiceImpl implements ProjectService {
         return ProjectMapper.INSTANCE.toProjectList(result.getContent(), result.getTotalElements());
     }
 
-    private Project checkProjectName(Project project) {
+    private void checkProjectName(Project project) {
         if (projectRepository.existsByName(project.getName())) {
             throw new ObjectAlreadyExist("Project already exist");
         }
-        return project;
     }
 }

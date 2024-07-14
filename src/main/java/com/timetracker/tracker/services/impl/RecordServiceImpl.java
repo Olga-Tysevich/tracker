@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.timetracker.tracker.utils.Constants.REQ_CANNOT_BE_NULL;
+
 @Service
 @RequiredArgsConstructor
 public class RecordServiceImpl implements RecordService {
@@ -27,21 +29,25 @@ public class RecordServiceImpl implements RecordService {
 
     @Override
     public void createRecord(CreateRecordDTO req) {
-        Optional.ofNullable(req)
-                .map(RecordMapper.INSTANCE::toEntity)
-                .map(this::checkRecord)
-                .ifPresent(recordRepository::save);
+        if (Objects.isNull(req)) {
+            throw new IllegalArgumentException(REQ_CANNOT_BE_NULL);
+        }
+        Record record = RecordMapper.INSTANCE.toEntity(req);
+        checkRecord(record);
+        recordRepository.save(record);
     }
 
     @Override
     public void deleteRecord(Long id) {
-        recordRepository.deleteById(id);
+        Optional.ofNullable(id).ifPresent(recordRepository::deleteById);
     }
 
     @Override
     public void updateRecord(UpdateRecordDTO req) {
-        Record record = Optional.ofNullable(req)
-                .flatMap(r -> recordRepository.findById(r.getId()))
+        if (Objects.isNull(req)) {
+            throw new IllegalArgumentException(REQ_CANNOT_BE_NULL);
+        }
+        Record record = recordRepository.findById(req.getId())
                 .orElseThrow(NotFoundException::new);
         Record forUpdate = RecordMapper.INSTANCE.mergeReqAndEntity(record, req);
         recordRepository.save(forUpdate);
@@ -59,14 +65,13 @@ public class RecordServiceImpl implements RecordService {
         return RecordMapper.INSTANCE.toRecordList(result.getContent(), result.getTotalElements());
     }
 
-    private Record checkRecord(Record record) {
+    private void checkRecord(Record record) {
         Record exist = recordRepository.getByStartDateAndProjectIdAndUserId(record.getStartDate(),
                 record.getProject().getId(), record.getUser().getId());
         if (Objects.isNull(exist)) {
-            return record;
+            return;
         }
         exist.setStartDate(record.getStartDate());
         exist.setDuration(record.getDuration());
-        return exist;
     }
 }

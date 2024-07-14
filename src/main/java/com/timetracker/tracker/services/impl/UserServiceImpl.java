@@ -8,10 +8,7 @@ import com.timetracker.tracker.dto.resp.UsersForPageDTO;
 import com.timetracker.tracker.entities.Role;
 import com.timetracker.tracker.entities.User;
 import com.timetracker.tracker.entities.enums.RoleEnum;
-import com.timetracker.tracker.exceptions.InvalidRole;
-import com.timetracker.tracker.exceptions.NotFoundException;
-import com.timetracker.tracker.exceptions.UserAlreadyExist;
-import com.timetracker.tracker.exceptions.UserNotFoundException;
+import com.timetracker.tracker.exceptions.*;
 import com.timetracker.tracker.mappers.UserMapper;
 import com.timetracker.tracker.repositories.RoleRepository;
 import com.timetracker.tracker.repositories.UserRepository;
@@ -19,6 +16,7 @@ import com.timetracker.tracker.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -26,33 +24,47 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.timetracker.tracker.utils.Constants.REQ_CANNOT_BE_NULL;
+
+/**
+ *
+ */
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public void createUser(CreateUserDTO req) {
-        Optional.ofNullable(req)
-                .map(UserMapper.INSTANCE::toEntity)
-                .map(this::checkEmail)
-                .map(u -> setRoles(u, req.getRoleNames()))
-                .ifPresent(userRepository::save);
+        if (Objects.isNull(req)) {
+            throw new IllegalArgumentException(REQ_CANNOT_BE_NULL);
+        }
+        checkPassword(req.getPassword(), req.getPasswordConfirm());
+        User user = UserMapper.INSTANCE.toEntity(req);
+        checkEmail(user);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        setRoles(user, req.getRoleNames());
+        userRepository.save(user);
     }
 
     @Override
     public void deleteUser(Long id) {
-        userRepository.deleteById(id);
+        Optional.ofNullable(id).ifPresent(userRepository::deleteById);
     }
 
     @Override
     public void updateUser(UpdateUserDTO req) {
-        User user = Optional.ofNullable(req)
-                .flatMap(r -> userRepository.findById(r.getId()))
+        if (Objects.isNull(req)) {
+            throw new IllegalArgumentException(REQ_CANNOT_BE_NULL);
+        }
+        User user = userRepository.findById(req.getId())
                 .orElseThrow(NotFoundException::new);
         User forUpdate = UserMapper.INSTANCE.mergeReqAndEntity(user, req);
-        setRoles(forUpdate, req.getRoleNames());
+        if (Objects.nonNull(req.getRoleNames()) && !req.getRoleNames().isEmpty()) {
+            setRoles(forUpdate, req.getRoleNames());
+        }
         userRepository.save(forUpdate);
     }
 
@@ -74,21 +86,27 @@ public class UserServiceImpl implements UserService {
         return UserMapper.INSTANCE.toUserList(result.getContent(), result.getTotalElements());
     }
 
-    private User checkEmail(User user) {
+    private void checkEmail(User user) {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new UserAlreadyExist();
         }
-        return user;
     }
 
-    private User setRoles(User user, Set<String> roleNames) {
+    private void checkPassword(String password, String passwordConfirm) {
+        if (!Objects.requireNonNull(password).equals(passwordConfirm)) {
+            throw new PasswordMismatchException();
+        }
+    }
+
+
+    private void setRoles(User user, Set<String> roleNames) {
         if (Objects.nonNull(roleNames) & !roleNames.isEmpty()) {
             Set<Role> roles = roleNames.stream()
                     .map(RoleEnum::valueOf)
                     .map(roleRepository::getByRole)
                     .collect(Collectors.toSet());
             user.setRoleSet(roles);
-            return user;
+            return;
         }
         throw new InvalidRole();
     }

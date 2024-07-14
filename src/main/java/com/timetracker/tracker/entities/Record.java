@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.time.Duration;
 
@@ -16,7 +17,7 @@ import java.time.Duration;
 @Builder
 @Table(name = "records")
 @Entity
-public class Record {
+public class Record implements Serializable {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "recordIdSeq")

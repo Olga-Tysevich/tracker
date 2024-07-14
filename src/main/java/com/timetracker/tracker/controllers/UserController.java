@@ -13,35 +13,72 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controller class for handling User objects.
+ *
+ * @see com.timetracker.tracker.entities.User
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/tracker/user")
 public class UserController {
+    /**
+     * UserService interface
+     *
+     * @see com.timetracker.tracker.services.UserService
+     */
     private final UserService userService;
 
+    /**
+     * Endpoint to get a list of users for a specific page.
+     *
+     * @param req the request containing parameters for pagination.
+     * @return ResponseEntity with UsersForPageDTO object.
+     * @see com.timetracker.tracker.dto.req.GetUsersForPageDTO
+     */
     @GetMapping("/admin/get")
     public ResponseEntity<UsersForPageDTO> getUsers(@Valid GetUsersForPageDTO req) {
         UsersForPageDTO users = userService.getUsersForPage(req);
         return ResponseEntity.ok(users);
     }
 
+    /**
+     * Endpoint to create a new user.
+     *
+     * @param req the request containing user details.
+     * @return ResponseEntity with success status.
+     * @see com.timetracker.tracker.dto.req.CreateUserDTO
+     */
     @PostMapping("/admin/create")
     public ResponseEntity<?> createUser(@RequestBody @Valid CreateUserDTO req) {
         userService.createUser(req);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    /**
+     * Endpoint to update an existing user.
+     *
+     * @param req the request containing updated user details
+     * @return ResponseEntity with success status.
+     * @see com.timetracker.tracker.dto.req.UpdateUserDTO
+     */
     @PostMapping("/update")
     public ResponseEntity<?> updateUser(@RequestBody @Valid UpdateUserDTO req) {
         userService.updateUser(req);
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * Endpoint to delete a user by ID.
+     *
+     * @param id the ID of the user to be deleted.
+     * @return ResponseEntity with success status.
+     */
     @DeleteMapping("/admin/delete")
     public ResponseEntity<?> deleteUser(@RequestParam
-                                            @NotNull(message = "Id cannot be null!")
-                                            @Min(value = 1, message = "ID cannot be less than 1")
-                                            Long id) {
+                                        @NotNull(message = "Id cannot be null!")
+                                        @Min(value = 1, message = "ID cannot be less than 1")
+                                        Long id) {
         userService.deleteUser(id);
         return ResponseEntity.ok().build();
     }

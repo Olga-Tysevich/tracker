@@ -5,9 +5,7 @@ import com.timetracker.tracker.dto.req.GetUsersForPageDTO;
 import com.timetracker.tracker.dto.req.UpdateUserDTO;
 import com.timetracker.tracker.dto.resp.UserDTO;
 import com.timetracker.tracker.dto.resp.UsersForPageDTO;
-import org.springframework.stereotype.Service;
 
-@Service
 public interface UserService {
 
     void createUser(CreateUserDTO req);

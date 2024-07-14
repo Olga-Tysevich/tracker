@@ -13,40 +13,83 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controller class for handling Record objects.
+ *
+ * @see com.timetracker.tracker.entities.Record
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/tracker/record")
 public class RecordController {
+    /**
+     * RecordService interface
+     *
+     * @see com.timetracker.tracker.services.RecordService
+     */
     private final RecordService recordService;
 
-
+    /**
+     * Endpoint to create a new record.
+     *
+     * @param req the request containing record details.
+     * @return ResponseEntity with success status.
+     * @see com.timetracker.tracker.dto.req.CreateRecordDTO
+     */
     @PostMapping("/create/record")
     public ResponseEntity<?> createRecord(@RequestBody @Valid CreateRecordDTO req) {
         recordService.createRecord(req);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    /**
+     * Endpoint to update an existing record.
+     *
+     * @param req the request containing updated record details
+     * @return ResponseEntity with success status.
+     * @see com.timetracker.tracker.dto.req.UpdateRecordDTO
+     */
     @PostMapping("/update/record")
     public ResponseEntity<?> updateRecord(@RequestBody @Valid UpdateRecordDTO req) {
         recordService.updateRecord(req);
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * Endpoint to delete a record by ID.
+     *
+     * @param id the ID of the record to be deleted.
+     * @return ResponseEntity with success status.
+     */
     @DeleteMapping("/delete/record")
     public ResponseEntity<?> deleteRecord(@RequestParam
                                           @NotNull(message = "Id cannot be null!")
                                           @Min(value = 1, message = "ID cannot be less than 1")
                                           Long id) {
         recordService.deleteRecord(id);
-        return  ResponseEntity.ok().build();
+        return ResponseEntity.ok().build();
     }
 
+    /**
+     * Endpoint to get a list of records for a specific page.
+     *
+     * @param req the request containing parameters for pagination.
+     * @return ResponseEntity with RecordsForPageDTO object.
+     * @see com.timetracker.tracker.dto.req.GetRecordsForPageDTO
+     */
     @GetMapping("/admin/get")
     public ResponseEntity<RecordsForPageDTO> getRecords(@Valid GetRecordsForPageDTO req) {
         RecordsForPageDTO records = recordService.getRecordsForPage(req);
         return ResponseEntity.ok(records);
     }
 
+    /**
+     * Endpoint for getting a list of a specific user's records for a specific page.
+     *
+     * @param req the request containing parameters for pagination and userId.
+     * @return ResponseEntity with RecordsForPageDTO object.
+     * @see com.timetracker.tracker.dto.req.GetRecordsForPageDTO
+     */
     @GetMapping("/user/get")
     public ResponseEntity<RecordsForPageDTO> getUserRecords(@Valid GetRecordsForPageDTO req) {
         RecordsForPageDTO records = recordService.getRecordsForPage(req);
