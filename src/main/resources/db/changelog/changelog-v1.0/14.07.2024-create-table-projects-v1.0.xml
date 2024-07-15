@@ -17,9 +17,7 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-    </changeSet>
-
-    <changeSet id="add-sequence-projects-table" author="Olga_Tysevich">
         <createSequence sequenceName="project_id_seq"/>
     </changeSet>
+
 </databaseChangeLog>

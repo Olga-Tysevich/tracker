@@ -38,7 +38,7 @@ public class RecordController {
      * @return ResponseEntity with success status.
      * @see com.timetracker.tracker.dto.req.CreateRecordDTO
      */
-    @PostMapping("/create/record")
+    @PostMapping("/create")
     public ResponseEntity<?> createRecord(@RequestBody @Valid CreateRecordDTO req) {
         Long userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
         req.setUserId(userId);
@@ -53,7 +53,7 @@ public class RecordController {
      * @return ResponseEntity with success status.
      * @see com.timetracker.tracker.dto.req.UpdateRecordDTO
      */
-    @PostMapping("/update/record")
+    @PostMapping("/update")
     public ResponseEntity<?> updateRecord(@RequestBody @Valid UpdateRecordDTO req) {
         recordService.updateRecord(req);
         return ResponseEntity.ok().build();
@@ -65,7 +65,7 @@ public class RecordController {
      * @param id the ID of the record to be deleted.
      * @return ResponseEntity with success status.
      */
-    @DeleteMapping("/delete/record")
+    @DeleteMapping("/delete")
     public ResponseEntity<?> deleteRecord(@RequestParam
                                           @NotNull(message = "Id cannot be null!")
                                           @Min(value = 1, message = "ID cannot be less than 1")
@@ -94,7 +94,7 @@ public class RecordController {
      * @return ResponseEntity with RecordsForPageDTO object.
      * @see com.timetracker.tracker.dto.req.GetRecordsForPageDTO
      */
-    @GetMapping("/user/get")
+    @GetMapping("/get")
     public ResponseEntity<RecordsForPageDTO> getUserRecords(@Valid GetRecordsForPageDTO req) {
         Long userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
         req.setUserId(userId);

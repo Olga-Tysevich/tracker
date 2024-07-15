@@ -13,10 +13,7 @@
                 <constraints unique="true" nullable="false"/>
             </column>
         </createTable>
-    </changeSet>
-
-
-    <changeSet id="add-sequence-refresh_tokens-table" author="Olga_Tysevich">
         <createSequence sequenceName="user_id_seq"/>
     </changeSet>
+
 </databaseChangeLog>

@@ -36,7 +36,7 @@ public class ProjectController {
      * @return ResponseEntity with ProjectsForPageDTO object.
      * @see com.timetracker.tracker.dto.req.GetProjectsForPageDTO
      */
-    @GetMapping("/admin/get/projects")
+    @GetMapping("/get")
     public ResponseEntity<ProjectsForPageDTO> getProjects(@Valid GetProjectsForPageDTO req) {
         ProjectsForPageDTO projects = projectService.getProjectsForPage(req);
         return ResponseEntity.ok(projects);
@@ -49,7 +49,7 @@ public class ProjectController {
      * @return ResponseEntity with success status.
      * @see com.timetracker.tracker.dto.req.CreateProjectDTO
      */
-    @PostMapping("/admin/create/project")
+    @PostMapping("/admin/create")
     public ResponseEntity<?> createProject(@RequestBody @Valid CreateProjectDTO req) {
         projectService.createProject(req);
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -62,7 +62,7 @@ public class ProjectController {
      * @return ResponseEntity with success status.
      * @see com.timetracker.tracker.dto.req.UpdateProjectDTO
      */
-    @PostMapping("/admin/update/project")
+    @PostMapping("/admin/update")
     public ResponseEntity<?> updateProject(@RequestBody @Valid UpdateProjectDTO req) {
         projectService.updateProject(req);
         return ResponseEntity.ok().build();
@@ -74,7 +74,7 @@ public class ProjectController {
      * @param id the ID of the project to be deleted.
      * @return ResponseEntity with success status.
      */
-    @DeleteMapping("/admin/delete/project")
+    @DeleteMapping("/admin/delete")
     public ResponseEntity<?> deleteProject(@RequestParam
                                            @NotNull(message = "Id cannot be null!")
                                            @Min(value = 1, message = "ID cannot be less than 1")

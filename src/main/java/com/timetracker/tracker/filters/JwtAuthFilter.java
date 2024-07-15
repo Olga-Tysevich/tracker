@@ -87,6 +87,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                     throw new JwtException(TOKEN_WAS_STOLEN_MESSAGE);
                 }
             }
+
+            filterChain.doFilter(request, response);
+
         } catch (UnauthorizedException | JwtException e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().print(e.getMessage());

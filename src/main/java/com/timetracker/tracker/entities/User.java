@@ -48,7 +48,6 @@ public class User implements UserDetails, Serializable {
 
     @Column(nullable = false)
     @NotBlank(message = PASSWORD_CANNOT_BE_NULL_OR_EMPTY)
-    @Pattern(regexp = PASSWORD_PATTERN, message = INVALID_PASSWORD_MESSAGE)
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)

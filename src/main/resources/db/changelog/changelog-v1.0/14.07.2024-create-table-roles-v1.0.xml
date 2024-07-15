@@ -14,18 +14,15 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-    </changeSet>
-
-    <changeSet id="add_sequence_roles_table" author="Olga_Tysevich">
         <createSequence sequenceName="role_id_seq"/>
     </changeSet>
 
     <changeSet id="insert_roles_id" author="Olga Tysevich">
         <insert tableName="roles">
-            <column name="role" value="ADMIN_ROLE"/>
+            <column name="role" value="ROLE_ADMIN"/>
         </insert>
         <insert tableName="roles">
-            <column name="role" value="USER_ROLE"/>
+            <column name="role" value="ROLE_USER"/>
         </insert>
     </changeSet>
 </databaseChangeLog>

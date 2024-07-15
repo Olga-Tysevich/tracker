@@ -25,9 +25,7 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-    </changeSet>
 
-    <changeSet id="add-sequence" author="Olga_Tysevich">
         <createSequence sequenceName="record_id_seq"/>
     </changeSet>
 

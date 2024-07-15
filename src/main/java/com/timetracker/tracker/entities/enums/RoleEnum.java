@@ -6,6 +6,6 @@ package com.timetracker.tracker.entities.enums;
  * ADMIN_ROLE - Represents an administrative user role.
  */
 public enum RoleEnum {
-    USER_ROLE,
-    ADMIN_ROLE
+    ROLE_USER,
+    ROLE_ADMIN
 }
