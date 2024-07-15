@@ -15,6 +15,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.timetracker.tracker.utils.Constants.TOKEN_CANNOT_BE_NULL_OR_EMPTY;
 
@@ -23,6 +25,7 @@ import static com.timetracker.tracker.utils.Constants.TOKEN_CANNOT_BE_NULL_OR_EM
  */
 @Service
 @RequiredArgsConstructor
+@Transactional(propagation = Propagation.REQUIRED)
 public class JwtServiceImpl implements JwtService {
     /**
      * RefreshTokenRepository bean.
