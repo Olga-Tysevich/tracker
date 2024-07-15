@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.25.xsd">
+
+    <changeSet id="create_table_records" author="Olga_Tysevich">
+        <createTable tableName="records">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT"/>
+            <column name="project_id" type="BIGINT"/>
+            <column name="description" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="duration" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="add-sequence" author="Olga_Tysevich">
+        <createSequence sequenceName="record_id_seq"/>
+    </changeSet>
+
+    <changeSet author="Olga_Tysevich" id="add-foreign_key_table_records">
+        <addForeignKeyConstraint baseTableName="records"
+                                 baseColumnNames="user_id"
+                                 constraintName="FKqc34n12edfkgixnws4bvx8mkt"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="records"
+                                 baseColumnNames="project_id"
+                                 constraintName="FKqc35n13edfkgixnws4bvx8mkt"
+                                 referencedTableName="projects"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>

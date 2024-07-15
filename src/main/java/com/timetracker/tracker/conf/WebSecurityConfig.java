@@ -66,8 +66,8 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(IGNORE_URLS).permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN_ROLE")
-                        .requestMatchers("/api/tracker/**").authenticated()
-                        .anyRequest().authenticated())
+                        .requestMatchers("/api/tracker/project/**", "/api/tracker/record/**", "/api/tracker/user/**").authenticated()
+                        .anyRequest().permitAll())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)

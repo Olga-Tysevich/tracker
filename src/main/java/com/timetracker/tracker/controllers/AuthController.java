@@ -18,7 +18,7 @@ import static com.timetracker.tracker.utils.Constants.REFRESH_TOKEN_KEY;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/tracker/auth")
+@RequestMapping("api/tracker/auth")
 public class AuthController {
     /**
      * AuthService interface

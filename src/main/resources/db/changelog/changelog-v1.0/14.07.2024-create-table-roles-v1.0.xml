@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.25.xsd">
+
+    <changeSet id="create_roles_table" author="Olga_Tysevich">
+        <createTable tableName="roles">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="role" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="add_sequence_roles_table" author="Olga_Tysevich">
+        <createSequence sequenceName="role_id_seq"/>
+    </changeSet>
+
+    <changeSet id="insert_roles_id" author="Olga Tysevich">
+        <insert tableName="roles">
+            <column name="role" value="ADMIN_ROLE"/>
+        </insert>
+        <insert tableName="roles">
+            <column name="role" value="USER_ROLE"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
