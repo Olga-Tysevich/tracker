@@ -1,6 +1,6 @@
 package com.timetracker.tracker.entities;
 
-import com.timetracker.tracker.converters.DurationConverter;
+import com.timetracker.tracker.controllers.converters.DurationConverter;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

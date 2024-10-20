@@ -1,4 +1,4 @@
-package com.timetracker.tracker.converters;
+package com.timetracker.tracker.controllers.converters;
 
 import com.timetracker.tracker.dto.req.GetRecordsForPageDTO;
 import com.timetracker.tracker.repositories.specifications.RecordFilter;

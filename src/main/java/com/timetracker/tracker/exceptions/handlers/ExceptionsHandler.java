@@ -32,12 +32,11 @@ public class ExceptionsHandler {
     /**
      * Handles exceptions related to access denied for resources.
      *
-     * @param e The AccessDeniedTrackerException that was thrown.
+     * @param e The AccessDeniedException that was thrown.
      * @return ResponseEntity containing the exception response.
-     * @see com.timetracker.tracker.exceptions.AccessDeniedTrackerException
      */
-    @ExceptionHandler(AccessDeniedTrackerException.class)
-    public ResponseEntity<?> accessExceptions(AccessDeniedTrackerException e) {
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<?> accessExceptions(AccessDeniedException e) {
         return buildExceptionResponse(HttpStatus.FORBIDDEN, e);
     }
 

@@ -1,4 +1,4 @@
-package com.timetracker.tracker.converters;
+package com.timetracker.tracker.controllers.converters;
 
 import jakarta.persistence.AttributeConverter;
 

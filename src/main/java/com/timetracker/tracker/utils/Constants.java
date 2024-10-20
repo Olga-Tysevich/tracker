@@ -80,7 +80,6 @@ public class Constants {
     public static final String EXCEPTION_DETAILS_CANNOT_BE_EMPTY = "Exception details cannot be empty!";
     public static final String EXCEPTION_MESSAGE_CANNOT_BE_NULL = "Exception message cannot be null or empty!";
     public static final String HTTP_STATUS_CODE_CANNOT_BE_NULL = "Http status code cannot be null!";
-    public static final String ACCESS_DENIED = "Access denied!";
     public static final String FIELD_NAME_CANNOT_BE_NULL = "Field name cannot be null!";
     public static final String MESSAGE_CANNOT_BE_NULL = "Message cannot be null!";
 

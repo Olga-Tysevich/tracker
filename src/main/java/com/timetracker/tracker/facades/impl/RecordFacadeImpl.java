@@ -1,6 +1,6 @@
 package com.timetracker.tracker.facades.impl;
 
-import com.timetracker.tracker.converters.RecordFilterConverter;
+import com.timetracker.tracker.controllers.converters.RecordFilterConverter;
 import com.timetracker.tracker.dto.req.CreateRecordDTO;
 import com.timetracker.tracker.dto.req.GetRecordsForPageDTO;
 import com.timetracker.tracker.dto.req.UpdateRecordDTO;
