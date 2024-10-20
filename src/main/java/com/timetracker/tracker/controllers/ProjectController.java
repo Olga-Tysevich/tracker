@@ -4,7 +4,7 @@ import com.timetracker.tracker.dto.req.CreateProjectDTO;
 import com.timetracker.tracker.dto.req.GetProjectsForPageDTO;
 import com.timetracker.tracker.dto.req.UpdateProjectDTO;
 import com.timetracker.tracker.dto.resp.ProjectsForPageDTO;
-import com.timetracker.tracker.services.ProjectService;
+import com.timetracker.tracker.facades.ProjectFacade;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -23,11 +23,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/tracker/project")
 public class ProjectController {
     /**
-     * ProjectService interface
+     * ProjectFacade interface
      *
-     * @see com.timetracker.tracker.services.ProjectService
+     * @see com.timetracker.tracker.facades.ProjectFacade
      */
-    private final ProjectService projectService;
+    private final ProjectFacade projectFacade;
 
     /**
      * Endpoint to get a list of projects for a specific page.
@@ -38,7 +38,7 @@ public class ProjectController {
      */
     @GetMapping("/get")
     public ResponseEntity<ProjectsForPageDTO> getProjects(@Valid GetProjectsForPageDTO req) {
-        ProjectsForPageDTO projects = projectService.getProjectsForPage(req);
+        ProjectsForPageDTO projects = projectFacade.getProjectsForPage(req);
         return ResponseEntity.ok(projects);
     }
 
@@ -51,7 +51,7 @@ public class ProjectController {
      */
     @PostMapping("/admin/create")
     public ResponseEntity<?> createProject(@RequestBody @Valid CreateProjectDTO req) {
-        projectService.createProject(req);
+        projectFacade.createProject(req);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -64,7 +64,7 @@ public class ProjectController {
      */
     @PostMapping("/admin/update")
     public ResponseEntity<?> updateProject(@RequestBody @Valid UpdateProjectDTO req) {
-        projectService.updateProject(req);
+        projectFacade.updateProject(req);
         return ResponseEntity.ok().build();
     }
 
@@ -79,7 +79,7 @@ public class ProjectController {
                                            @NotNull(message = "Id cannot be null!")
                                            @Min(value = 1, message = "ID cannot be less than 1")
                                            Long id) {
-        projectService.deleteProject(id);
+        projectFacade.deleteProject(id);
         return ResponseEntity.ok().build();
     }
 }

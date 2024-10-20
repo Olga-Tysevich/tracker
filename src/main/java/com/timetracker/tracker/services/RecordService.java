@@ -1,9 +1,12 @@
 package com.timetracker.tracker.services;
 
-import com.timetracker.tracker.dto.req.CreateRecordDTO;
-import com.timetracker.tracker.dto.req.GetRecordsForPageDTO;
-import com.timetracker.tracker.dto.req.UpdateRecordDTO;
-import com.timetracker.tracker.dto.resp.RecordsForPageDTO;
+import com.timetracker.tracker.repositories.specifications.RecordFilter;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import com.timetracker.tracker.entities.Record;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * The interface defines methods for managing records.
@@ -11,12 +14,12 @@ import com.timetracker.tracker.dto.resp.RecordsForPageDTO;
 public interface RecordService {
 
     /**
-     * Creates a new record based on the information provided in the CreateRecordDTO object.
+     * Creates a new record.
      *
-     * @param req The CreateRecordDTO object containing the information for the new record.
-     * @see com.timetracker.tracker.dto.req.CreateRecordDTO
+     * @param record The Record object to save to the database.
+     * @see com.timetracker.tracker.entities.Record
      */
-    void createRecord(CreateRecordDTO req);
+    void createRecord(Record record);
 
     /**
      * Deletes the record with the specified ID.
@@ -26,21 +29,29 @@ public interface RecordService {
     void deleteRecord(Long id);
 
     /**
-     * Updates an existing record with the information provided in the UpdateRecordDTO object.
+     * Updates an existing record.
      *
-     * @param req The UpdateRecordDTO object containing the updated information for the record.
-     * @see com.timetracker.tracker.dto.req.UpdateRecordDTO
+     * @param record The Record object to update to the database.
+     * @see com.timetracker.tracker.entities.Record
      */
-    void updateRecord(UpdateRecordDTO req);
+    void updateRecord(Record record);
 
     /**
-     * Retrieves records for a specific page based on the parameters provided in the GetRecordsForPageDTO object.
+     * Retrieves a record by record`s id.
      *
-     * @param req The GetRecordsForPageDTO object containing the parameters for retrieving records for a page.
-     * @return A RecordsForPageDTO object containing the records for the specified page.
-     * @see com.timetracker.tracker.dto.req.GetRecordsForPageDTO
-     * @see com.timetracker.tracker.dto.resp.RecordsForPageDTO
+     * @param id The ID of the record.
+     * @return The Optional object that contains or does not contain the specified Record object.
      */
-    RecordsForPageDTO getRecordsForPage(GetRecordsForPageDTO req);
+    Optional<Record> getRecordById(Long id);
+
+    /**
+     * Retrieves a page of records based on the parameters provided in the PageRequest object and the RecordFilter object.
+     *
+     * @param req The PageRequest object containing the parameters for retrieving records for a page.
+     * @param filter The RecordFilter object that contains the filter parameters for retrieving records for the page.
+     * @return The page of Record objects.
+     * @see com.timetracker.tracker.repositories.specifications.RecordFilter
+     */
+    Page<Record> getRecordsForPage(PageRequest req, RecordFilter filter);
 
 }

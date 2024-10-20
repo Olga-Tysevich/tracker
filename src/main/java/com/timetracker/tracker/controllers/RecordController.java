@@ -5,7 +5,7 @@ import com.timetracker.tracker.dto.req.GetRecordsForPageDTO;
 import com.timetracker.tracker.dto.req.UpdateRecordDTO;
 import com.timetracker.tracker.dto.resp.RecordsForPageDTO;
 import com.timetracker.tracker.entities.User;
-import com.timetracker.tracker.services.RecordService;
+import com.timetracker.tracker.facades.RecordFacade;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -25,11 +25,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/tracker/record")
 public class RecordController {
     /**
-     * RecordService interface
+     * RecordFacade interface
      *
-     * @see com.timetracker.tracker.services.RecordService
+     * @see com.timetracker.tracker.facades.RecordFacade
      */
-    private final RecordService recordService;
+    private final RecordFacade recordFacade;
 
     /**
      * Endpoint to create a new record.
@@ -42,7 +42,7 @@ public class RecordController {
     public ResponseEntity<?> createRecord(@RequestBody @Valid CreateRecordDTO req) {
         Long userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
         req.setUserId(userId);
-        recordService.createRecord(req);
+        recordFacade.createRecord(req);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -55,7 +55,7 @@ public class RecordController {
      */
     @PostMapping("/update")
     public ResponseEntity<?> updateRecord(@RequestBody @Valid UpdateRecordDTO req) {
-        recordService.updateRecord(req);
+        recordFacade.updateRecord(req);
         return ResponseEntity.ok().build();
     }
 
@@ -70,7 +70,7 @@ public class RecordController {
                                           @NotNull(message = "Id cannot be null!")
                                           @Min(value = 1, message = "ID cannot be less than 1")
                                           Long id) {
-        recordService.deleteRecord(id);
+        recordFacade.deleteRecord(id);
         return ResponseEntity.ok().build();
     }
 
@@ -83,7 +83,7 @@ public class RecordController {
      */
     @GetMapping("/admin/get")
     public ResponseEntity<RecordsForPageDTO> getRecords(@Valid GetRecordsForPageDTO req) {
-        RecordsForPageDTO records = recordService.getRecordsForPage(req);
+        RecordsForPageDTO records = recordFacade.getRecordsForPage(req);
         return ResponseEntity.ok(records);
     }
 
@@ -98,7 +98,7 @@ public class RecordController {
     public ResponseEntity<RecordsForPageDTO> getUserRecords(@Valid GetRecordsForPageDTO req) {
         Long userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
         req.setUserId(userId);
-        RecordsForPageDTO records = recordService.getRecordsForPage(req);
+        RecordsForPageDTO records = recordFacade.getRecordsForPage(req);
         return ResponseEntity.ok(records);
     }
 

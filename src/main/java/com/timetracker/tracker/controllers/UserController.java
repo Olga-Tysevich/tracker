@@ -6,7 +6,7 @@ import com.timetracker.tracker.dto.req.UpdateUserDTO;
 import com.timetracker.tracker.dto.resp.UserDTO;
 import com.timetracker.tracker.dto.resp.UsersForPageDTO;
 import com.timetracker.tracker.entities.User;
-import com.timetracker.tracker.services.UserService;
+import com.timetracker.tracker.facades.UserFacade;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -28,11 +28,11 @@ import static com.timetracker.tracker.utils.Constants.MIN_ID;
 @RequestMapping("/api/tracker/user")
 public class UserController {
     /**
-     * UserService interface
+     * UserFacade interface
      *
-     * @see com.timetracker.tracker.services.UserService
+     * @see com.timetracker.tracker.facades.UserFacade
      */
-    private final UserService userService;
+    private final UserFacade userFacade;
 
     /**
      * Endpoint to get a list of users for a specific page.
@@ -43,7 +43,7 @@ public class UserController {
      */
     @GetMapping("/admin/get")
     public ResponseEntity<UsersForPageDTO> getUsers(@Valid GetUsersForPageDTO req) {
-        UsersForPageDTO users = userService.getUsersForPage(req);
+        UsersForPageDTO users = userFacade.getUsersForPage(req);
         return ResponseEntity.ok(users);
     }
 
@@ -56,7 +56,7 @@ public class UserController {
      */
     @PostMapping("/admin/create")
     public ResponseEntity<?> createUser(@RequestBody @Valid CreateUserDTO req) {
-        userService.createUser(req);
+        userFacade.createUser(req);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -69,7 +69,7 @@ public class UserController {
     @GetMapping()
     public ResponseEntity<UserDTO> getUser() {
         Long userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
-        UserDTO userDTO = userService.getUserById(userId);
+        UserDTO userDTO = userFacade.getUserById(userId);
         return ResponseEntity.ok(userDTO);
     }
 
@@ -82,7 +82,7 @@ public class UserController {
      */
     @PostMapping("/update")
     public ResponseEntity<?> updateUser(@RequestBody @Valid UpdateUserDTO req) {
-        userService.updateUser(req);
+        userFacade.updateUser(req);
         return ResponseEntity.ok().build();
     }
 
@@ -97,7 +97,7 @@ public class UserController {
                                         @NotNull(message = "Id cannot be null!")
                                         @Min(value = MIN_ID, message = "ID cannot be less than 1")
                                         Long id) {
-        userService.deleteUser(id);
+        userFacade.deleteUser(id);
         return ResponseEntity.ok().build();
     }
 

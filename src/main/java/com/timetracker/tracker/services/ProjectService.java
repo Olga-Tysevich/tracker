@@ -1,9 +1,11 @@
 package com.timetracker.tracker.services;
 
-import com.timetracker.tracker.dto.req.CreateProjectDTO;
-import com.timetracker.tracker.dto.req.GetProjectsForPageDTO;
-import com.timetracker.tracker.dto.req.UpdateProjectDTO;
-import com.timetracker.tracker.dto.resp.ProjectsForPageDTO;
+import com.timetracker.tracker.entities.Project;
+import com.timetracker.tracker.entities.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
+import java.util.Optional;
 
 /**
  * The interface for managing projects.
@@ -13,10 +15,10 @@ public interface ProjectService {
     /**
      * Creates a new project.
      *
-     * @param req the request body for creating a project.
-     * @see com.timetracker.tracker.dto.req.CreateProjectDTO
+     * @param project the project object to save to the database.
+     * @see com.timetracker.tracker.entities.Project
      */
-    void createProject(CreateProjectDTO req);
+    void createProject(Project project);
 
     /**
      * Deletes a project by its ID.
@@ -28,19 +30,26 @@ public interface ProjectService {
     /**
      * Updates an existing project.
      *
-     * @param req the request body for updating a project.
-     * @see com.timetracker.tracker.dto.req.UpdateProjectDTO
+     * @param project the project object to update to the database.
+     * @see com.timetracker.tracker.entities.Project
      */
-    void updateProject(UpdateProjectDTO req);
+    void updateProject(Project project);
 
     /**
-     * Retrieves a list of projects for a specific page.
+     * Get the project with the given ID.
+     *
+     * @param id the ID of the project to get.
+     * @return The Optional object that contains or does not contain the specified Project object.
+     * @see com.timetracker.tracker.entities.Project
+     */
+    Optional<Project> getProjectById(Long id);
+
+    /**
+     * Retrieves a page of projects.
      *
      * @param req the request parameters for retrieving projects for a page.
-     * @return a DTO containing the projects to display on the page.
-     * @see com.timetracker.tracker.dto.req.GetProjectsForPageDTO
-     * @see com.timetracker.tracker.dto.resp.ProjectsForPageDTO
+     * @return a page containing the projects to display on the page.
      */
-    ProjectsForPageDTO getProjectsForPage(GetProjectsForPageDTO req);
+    Page<Project> getProjectsForPage(PageRequest req);
 
 }

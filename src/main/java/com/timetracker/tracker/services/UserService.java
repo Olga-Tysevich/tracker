@@ -1,10 +1,10 @@
 package com.timetracker.tracker.services;
 
-import com.timetracker.tracker.dto.req.CreateUserDTO;
-import com.timetracker.tracker.dto.req.GetUsersForPageDTO;
-import com.timetracker.tracker.dto.req.UpdateUserDTO;
-import com.timetracker.tracker.dto.resp.UserDTO;
-import com.timetracker.tracker.dto.resp.UsersForPageDTO;
+import com.timetracker.tracker.entities.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
+import java.util.Optional;
 
 /**
  * The interface provides methods to interact with user data.
@@ -12,12 +12,12 @@ import com.timetracker.tracker.dto.resp.UsersForPageDTO;
 public interface UserService {
 
     /**
-     * Create a new user with the given request data.
+     * Create a new user.
      *
-     * @param req the request data to create a new user.
-     * @see com.timetracker.tracker.dto.req.CreateUserDTO
+     * @param user the user object to save to the database.
+     * @see com.timetracker.tracker.entities.User
      */
-    void createUser(CreateUserDTO req);
+    void createUser(User user);
 
     /**
      * Delete the user with the given ID.
@@ -27,30 +27,28 @@ public interface UserService {
     void deleteUser(Long id);
 
     /**
-     * Update the user with the given request data.
+     * Updates an existing user.
      *
-     * @param req the request data to update a user.
-     * @see com.timetracker.tracker.dto.req.UpdateUserDTO
+     * @param user the user object to update to the database.
+     * @see com.timetracker.tracker.entities.User
      */
-    void updateUser(UpdateUserDTO req);
+    void updateUser(User user);
 
     /**
-     * et the user with the given ID.
+     * Get the user with the given ID.
      *
      * @param id the ID of the user to get.
-     * @return the user data.
-     * @see com.timetracker.tracker.dto.resp.UserDTO
+     * @return The Optional object that contains or does not contain the specified User object.
+     * @see com.timetracker.tracker.entities.User
      */
-    UserDTO getUserById(Long id);
+    Optional<User> getUserById(Long id);
 
     /**
-     * Get a list of users for a specific page with the given request data.
+     * Get a page of users for a specific page with the given request data.
      *
      * @param req the request data to get users for a page.
-     * @return the list of users for the page.
-     * @see com.timetracker.tracker.dto.req.GetUsersForPageDTO
-     * @see com.timetracker.tracker.dto.resp.UsersForPageDTO
+     * @return the page of users.
      */
-    UsersForPageDTO getUsersForPage(GetUsersForPageDTO req);
+    Page<User> getUsersForPage(PageRequest req);
 
 }
