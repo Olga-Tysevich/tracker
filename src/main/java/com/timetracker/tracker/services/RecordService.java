@@ -1,11 +1,10 @@
 package com.timetracker.tracker.services;
 
+import com.timetracker.tracker.entities.Record;
 import com.timetracker.tracker.repositories.specifications.RecordFilter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import com.timetracker.tracker.entities.Record;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -47,7 +46,7 @@ public interface RecordService {
     /**
      * Retrieves a page of records based on the parameters provided in the PageRequest object and the RecordFilter object.
      *
-     * @param req The PageRequest object containing the parameters for retrieving records for a page.
+     * @param req    The PageRequest object containing the parameters for retrieving records for a page.
      * @param filter The RecordFilter object that contains the filter parameters for retrieving records for the page.
      * @return The page of Record objects.
      * @see com.timetracker.tracker.repositories.specifications.RecordFilter

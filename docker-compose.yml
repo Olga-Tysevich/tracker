@@ -1,27 +1,32 @@
-version: '3.1'
+version: '3.7'
 
 volumes:
   pg_tracker:
+    name: pg_tracker_db_volume
+    external: false
 
 services:
   tracker_db:
+    container_name: ${TRACKER_DB_HOST}
     image: postgres
     restart: always
     environment:
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=pass
-      - POSTGRES_DB=tracker_db
+      - POSTGRES_USER=${TRACKER_DB_USER}
+      - POSTGRES_PASSWORD=${TRACKER_DB_PASSWORD}
+      - POSTGRES_DB=${TRACKER_DB_NAME}
     volumes:
       - pg_tracker:/var/lib/postgresql/data
 
     ports:
-      - "127.0.0.1:5433:5432"
+      - ${TRACKER_DB_EPORT}:${TRACKER_DB_PORT}
 
   app:
     restart: always
-    build: .
+    build:
+      context: ${APP_PATH}
+      dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - ${TRACKER_APP_EPORT}:${TRACKER_APP_PORT}
     depends_on:
       - tracker_db
     environment:
