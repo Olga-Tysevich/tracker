@@ -44,6 +44,15 @@ public interface UserService {
     Optional<User> getUserById(Long id);
 
     /**
+     * Get the user with the given email.
+     *
+     * @param email the email of the user to get.
+     * @return The Optional object that contains or does not contain the specified User object.
+     * @see com.timetracker.tracker.entities.User
+     */
+    Optional<User> getUserByEmail(String email);
+
+    /**
      * Get a page of users for a specific page with the given request data.
      *
      * @param req the request data to get users for a page.

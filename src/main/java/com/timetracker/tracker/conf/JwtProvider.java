@@ -83,7 +83,7 @@ public class JwtProvider {
     }
 
     /**
-     * Validates JWT access token.This method calls {@link com.timetracker.tracker.conf.JwtProvider#validateToken(String, Key)}.
+     * Validates JWT access token.This method calls {@link JwtProvider#validateToken(String, Key)}.
      *
      * @param accessToken String representation of JWT access token.
      * @return true if the JWT access token is valid, false otherwise.
@@ -93,13 +93,34 @@ public class JwtProvider {
     }
 
     /**
-     * Validates JWT refresh token.This method calls {@link com.timetracker.tracker.conf.JwtProvider#validateToken(String, Key)}.
+     * Validates JWT refresh token.This method calls {@link JwtProvider#validateToken(String, Key)}.
      *
      * @param refreshToken String representation of JWT refresh token.
      * @return true if the JWT refresh token is valid, false otherwise.
      */
     public boolean validateRefreshToken(@NotNull String refreshToken) {
         return validateToken(refreshToken, getJwtRefreshSecret());
+    }
+
+
+    /**
+     * Extracts claim from JWT access token.
+     *
+     * @param token String representation of JWT access token.
+     * @return The claims contained in the JWT access token.
+     */
+    public Claims getAccessClaims(@NotNull String token) {
+        return getClaims(token, getJwtAccessSecret());
+    }
+
+    /**
+     * Extracts claim from JWT refresh token.
+     *
+     * @param token String representation of JWT refresh token.
+     * @return The claims contained in the JWT refresh token.
+     */
+    public Claims getRefreshClaims(@NotNull String token) {
+        return getClaims(token, getJwtRefreshSecret());
     }
 
     /**
@@ -131,25 +152,6 @@ public class JwtProvider {
         return false;
     }
 
-    /**
-     * Extracts claim from JWT access token.
-     *
-     * @param token String representation of JWT access token.
-     * @return The claims contained in the JWT access token.
-     */
-    public Claims getAccessClaims(@NotNull String token) {
-        return getClaims(token, getJwtAccessSecret());
-    }
-
-    /**
-     * Extracts claim from JWT refresh token.
-     *
-     * @param token String representation of JWT refresh token.
-     * @return The claims contained in the JWT refresh token.
-     */
-    public Claims getRefreshClaims(@NotNull String token) {
-        return getClaims(token, getJwtRefreshSecret());
-    }
 
     /**
      * Retrieves the secret key used for creating JWT access tokens.

@@ -33,7 +33,7 @@ import static com.timetracker.tracker.utils.Constants.*;
 public class JwtAuthFilter extends OncePerRequestFilter {
     /**
      * JwtProvider bean.
-     * @see com.timetracker.tracker.conf.JwtProvider
+     * @see JwtProvider
      */
     private final JwtProvider jwtProvider;
     /**

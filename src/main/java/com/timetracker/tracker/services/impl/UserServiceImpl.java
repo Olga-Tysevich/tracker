@@ -89,6 +89,18 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * Method to retrieve a user by email.
+     *
+     * @param email The id of the user to retrieve.
+     * @return The Optional object that contains or does not contain the specified User object.
+     * @see com.timetracker.tracker.entities.User
+     */
+    @Override
+    public Optional<User> getUserByEmail(String email) {
+        return userRepository.getByEmail(email);
+    }
+
+    /**
      * Method to retrieve a list of users for a specified page.
      *
      * @param req The request object containing pagination information.

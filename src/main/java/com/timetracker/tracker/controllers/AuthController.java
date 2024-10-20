@@ -2,7 +2,7 @@ package com.timetracker.tracker.controllers;
 
 import com.timetracker.tracker.dto.req.UserLoginDTO;
 import com.timetracker.tracker.dto.resp.LoggedUserDTO;
-import com.timetracker.tracker.services.AuthService;
+import com.timetracker.tracker.facades.AuthFacade;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +23,9 @@ public class AuthController {
     /**
      * AuthService interface
      *
-     * @see com.timetracker.tracker.services.AuthService
+     * @see com.timetracker.tracker.facades.AuthFacade
      */
-    private final AuthService authService;
+    private final AuthFacade authFacade;
 
     /**
      * Endpoint for user login.
@@ -35,7 +35,7 @@ public class AuthController {
      */
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid UserLoginDTO req) {
-        LoggedUserDTO respBody = authService.loginUser(req);
+        LoggedUserDTO respBody = authFacade.loginUser(req);
         ResponseCookie cookie = getCookie(respBody.getRefreshToken());
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(respBody);
     }
@@ -48,7 +48,7 @@ public class AuthController {
      */
     @PostMapping("/refresh")
     public ResponseEntity<?> refresh(@CookieValue(REFRESH_TOKEN_KEY) String token) {
-        LoggedUserDTO respBody = authService.reLoginUser(token);
+        LoggedUserDTO respBody = authFacade.reLoginUser(token);
         ResponseCookie cookie = getCookie(respBody.getRefreshToken());
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(respBody);
     }

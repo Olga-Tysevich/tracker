@@ -31,6 +31,7 @@ public class Constants {
     public static final String PROJECT_DESCRIPTION_CANNOT_BE_NULL = "Project description cannot be null!";
     public static final String PROJECT_ALREADY_EXIST = "Project already exist";
     public static final String RECORD_ID_CANNOT_BE_NULL = "Record ID cannot be null!";
+    public static final String TOKEN_ID_CANNOT_BE_NULL = "Token ID cannot be null!";
     public static final String MIN_PROJECT_ID_MESSAGE = "The project ID must be greater than or equal to 1!";
     public static final String START_DATE_CANNOT_BE_NULL = "Start date cannot be null!";
     public static final String END_DATE_CANNOT_BE_NULL = "End date cannot be null!";
