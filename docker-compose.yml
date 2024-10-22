@@ -1,4 +1,3 @@
-version: '3.7'
 
 volumes:
   pg_tracker:
@@ -7,7 +6,7 @@ volumes:
 
 services:
   tracker_db:
-    container_name: ${TRACKER_DB_HOST}
+    container_name: ${TRACKER_DB_NAME}
     image: postgres
     restart: always
     environment:
@@ -18,7 +17,7 @@ services:
       - pg_tracker:/var/lib/postgresql/data
 
     ports:
-      - ${TRACKER_DB_EPORT}:${TRACKER_DB_PORT}
+      - ${TRACKER_DB_HOST}:${TRACKER_DB_EPORT}:${TRACKER_DB_PORT}
 
   app:
     restart: always
@@ -30,5 +29,6 @@ services:
     depends_on:
       - tracker_db
     environment:
-      SPRING_DATASOURCE_URL: 'jdbc:postgresql://tracker_db:5432/tracker_db'
-      JAVA_OPTS: '-Xmx512m'
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_APPLICATION_JSON: ${SPRING_APPLICATION_PARAMS}
+      JAVA_OPTS: ${JV_MAX_MEM}

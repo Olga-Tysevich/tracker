@@ -25,14 +25,14 @@ public class RefreshToken implements Serializable {
 
     @Id
     @Column
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "recordIdSeq")
-    @SequenceGenerator(name = "recordIdSeq", sequenceName = "record_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tokenIdSeq")
+    @SequenceGenerator(name = "tokenIdSeq", sequenceName = "token_id_seq", allocationSize = 1)
     @NotNull(message = TOKEN_ID_CANNOT_BE_NULL)
     private Long id;
 
     @ManyToOne
     @JoinColumn(nullable = false, name = "user_id")
-    @NotBlank(message = USER_CANNOT_BE_NULL)
+    @NotNull(message = USER_CANNOT_BE_NULL)
     private User user;
 
     @Column(name = "refresh_token", unique = true, nullable = false)

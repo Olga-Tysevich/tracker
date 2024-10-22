@@ -12,6 +12,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.HttpMediaTypeException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -49,7 +50,7 @@ public class ExceptionsHandler {
      */
     @ExceptionHandler(InvalidRecordPeriod.class)
     public ResponseEntity<?> invalidRecordPeriodExceptions(Exception e) {
-        return buildExceptionResponse(HttpStatus.NOT_FOUND, e);
+        return buildExceptionResponse(HttpStatus.BAD_REQUEST, e);
     }
 
     /**
@@ -133,8 +134,8 @@ public class ExceptionsHandler {
      * @return ResponseEntity containing the exception response.
      * @see com.timetracker.tracker.exceptions.UnauthorizedException
      */
-    @ExceptionHandler(UnsupportedDTO.class)
-    public ResponseEntity<?> unsupportedExceptions(UnsupportedDTO e) {
+    @ExceptionHandler({UnsupportedDTO.class, HttpMediaTypeException.class})
+    public ResponseEntity<?> unsupportedExceptions(Exception e) {
         return buildExceptionResponse(HttpStatus.BAD_REQUEST, e);
     }
 

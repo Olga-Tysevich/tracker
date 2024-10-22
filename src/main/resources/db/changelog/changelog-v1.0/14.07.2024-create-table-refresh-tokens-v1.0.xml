@@ -16,7 +16,15 @@
                 <constraints unique="true" nullable="false"/>
             </column>
         </createTable>
-        <createSequence sequenceName="user_id_seq"/>
+        <createSequence sequenceName="token_id_seq"/>
+    </changeSet>
+
+    <changeSet author="Olga_Tysevich" id="add-foreign_key_table_refresh_tokens">
+        <addForeignKeyConstraint baseTableName="refresh_tokens"
+                                 baseColumnNames="user_id"
+                                 constraintName="FKqc34n12edfkgixcts4bvx9mkt"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
     </changeSet>
 
 </databaseChangeLog>

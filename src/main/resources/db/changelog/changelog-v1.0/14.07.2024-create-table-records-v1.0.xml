@@ -25,7 +25,6 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-
         <createSequence sequenceName="record_id_seq"/>
     </changeSet>
 

@@ -1,0 +1,496 @@
+{
+	"info": {
+		"_postman_id": "5bdb1783-9c02-43cf-89bd-127216e1454f",
+		"name": "tracker",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36745644"
+	},
+	"item": [
+		{
+			"name": "GetUsers",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpZ29yMkBtYWlsLnJ1IiwiZXhwIjoxNzIxNjQ0NDM4LCJpZCI6Miwicm9sZSI6W3siaWQiOjIsInJvbGUiOiJST0xFX1VTRVIifV19.N0qbzFucp09-r0fbp2KDf-gfvR8-phMqPGAUFTxq06baQBVeWUQ9PGqKexsD5DPIpRzz_zzDqh6-OZdNxc20Bw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/tracker/user/admin/get?countPerPage=10&pageNum=0&projectFilter=null",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tracker",
+						"user",
+						"admin",
+						"get"
+					],
+					"query": [
+						{
+							"key": "countPerPage",
+							"value": "10"
+						},
+						{
+							"key": "pageNum",
+							"value": "0"
+						},
+						{
+							"key": "projectFilter",
+							"value": "null"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createUser",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBtYWlsLmNvbSIsImV4cCI6MTcyMTY0NDM0NiwiaWQiOjEsInJvbGUiOlt7ImlkIjoxLCJyb2xlIjoiUk9MRV9BRE1JTiJ9XX0.GHUex3ygEYyFO00r93sR5peCHq0Jo07JovL6kat_JAzA3p02zdF8gPGuGlRrR2RtyeOK06IsinlBxwy27wdeNQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"IgorNew\",\r\n    \"surname\": \"Stalnoy\",\r\n    \"email\": \"igor3@mail.ru\",\r\n    \"password\": \"Helga8707!\",\r\n    \"passwordConfirm\": \"Helga8707!\",\r\n    \"roleNames\": [\r\n        \"ROLE_USER\"\r\n    ]\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/tracker/user/admin/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tracker",
+						"user",
+						"admin",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createProject",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBtYWlsLmNvbSIsImV4cCI6MTcyMTY0NDM0NiwiaWQiOjEsInJvbGUiOlt7ImlkIjoxLCJyb2xlIjoiUk9MRV9BRE1JTiJ9XX0.GHUex3ygEYyFO00r93sR5peCHq0Jo07JovL6kat_JAzA3p02zdF8gPGuGlRrR2RtyeOK06IsinlBxwy27wdeNQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Project5\",\r\n    \"description\": \"Test project No.3\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/tracker/project/admin/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tracker",
+						"project",
+						"admin",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetProjects",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpZ29yMkBtYWlsLnJ1IiwiZXhwIjoxNzIxNjQ0NDM4LCJpZCI6Miwicm9sZSI6W3siaWQiOjIsInJvbGUiOiJST0xFX1VTRVIifV19.N0qbzFucp09-r0fbp2KDf-gfvR8-phMqPGAUFTxq06baQBVeWUQ9PGqKexsD5DPIpRzz_zzDqh6-OZdNxc20Bw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/tracker/project/get?countPerPage=3&pageNum=0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tracker",
+						"project",
+						"get"
+					],
+					"query": [
+						{
+							"key": "countPerPage",
+							"value": "3"
+						},
+						{
+							"key": "pageNum",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateRec",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpZ29yMkBtYWlsLnJ1IiwiZXhwIjoxNzIxNjQ0NDM4LCJpZCI6Miwicm9sZSI6W3siaWQiOjIsInJvbGUiOiJST0xFX1VTRVIifV19.N0qbzFucp09-r0fbp2KDf-gfvR8-phMqPGAUFTxq06baQBVeWUQ9PGqKexsD5DPIpRzz_zzDqh6-OZdNxc20Bw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\": 1,\r\n    \"projectId\": 1,\r\n    \"description\": \"Record 1 descr\",\r\n    \"startDate\": \"2024-01-01\",\r\n    \"duration\" : \"2w 3d 1h 1m\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/tracker/record/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tracker",
+						"record",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getUserRecords",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpZ29yMkBtYWlsLnJ1IiwiZXhwIjoxNzIxNjQ0NDM4LCJpZCI6Miwicm9sZSI6W3siaWQiOjIsInJvbGUiOiJST0xFX1VTRVIifV19.N0qbzFucp09-r0fbp2KDf-gfvR8-phMqPGAUFTxq06baQBVeWUQ9PGqKexsD5DPIpRzz_zzDqh6-OZdNxc20Bw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/tracker/record/get?countPerPage=2&pageNum=0&userId=2&startDate=2024-01-01&endDate=2024-01-18",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tracker",
+						"record",
+						"get"
+					],
+					"query": [
+						{
+							"key": "countPerPage",
+							"value": "2"
+						},
+						{
+							"key": "pageNum",
+							"value": "0"
+						},
+						{
+							"key": "userId",
+							"value": "2"
+						},
+						{
+							"key": "startDate",
+							"value": "2024-01-01"
+						},
+						{
+							"key": "endDate",
+							"value": "2024-01-18"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateRec",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 3,\r\n    \"startDate\": \"2024-01-01\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/tracker/user/record/update",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tracker",
+						"user",
+						"record",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteRecords",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBtYWlsLmNvbSIsImV4cCI6MTcyMTA2MzcyMiwiaWQiOjEsInJvbGUiOlt7ImlkIjoxLCJyb2xlIjoiUk9MRV9BRE1JTiJ9XX0.mPiL8as1nXMGjzugOuqiwxAuMHEdNNXdMsAfmW_E3RwUtEWPqSzseprcvVJp6Kag8rEExOAcvvAc1nWoavfxbA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/tracker/record/delete?id=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tracker",
+						"record",
+						"delete"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LogInAdmin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"admin@mail.com\",\r\n    \"password\":\"973341\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/tracker/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tracker",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LogInUser",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"igor2@mail.ru\",\r\n    \"password\":\"Helga8707!\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/tracker/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tracker",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RefreshToken",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"refresh-token\": \"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBtYWlsLmNvbSIsImV4cCI6MTcyMTgyMTcyOX0.R4bSFKc09d-IaEoQpbQWkoa_J7SwMx0xvNqS79k3IHxUe7SwiEB863scDun1bvySHlkv6z8GkSNW7g4Ay2_Zww\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/tracker/auth/refresh",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tracker",
+						"auth",
+						"refresh"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/tracker/record/admin/get?countPerPage=10&pageNum=0",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBtYWlsLmNvbSIsImV4cCI6MTcyMTA2NDEyNywiaWQiOjEsInJvbGUiOlt7ImlkIjoxLCJyb2xlIjoiUk9MRV9BRE1JTiJ9XX0.zhSFJzfdhdpdAtRM1zb4atScmPUEAG6Xb1YLOCWK-0GMgHzNpu7vJClhMXfa8o1Cnk9zmUku-WVjNOldGHvDtQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/tracker/record/admin/get?countPerPage=10&pageNum=0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tracker",
+						"record",
+						"admin",
+						"get"
+					],
+					"query": [
+						{
+							"key": "countPerPage",
+							"value": "10"
+						},
+						{
+							"key": "pageNum",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

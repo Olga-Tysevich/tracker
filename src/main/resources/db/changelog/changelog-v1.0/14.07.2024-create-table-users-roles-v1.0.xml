@@ -6,14 +6,14 @@
                             https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.25.xsd">
 
     <changeSet id="create-users-roles-table" author="Olga_Tysevich">
-    <createTable tableName="users_roles">
-        <column name="user_id" type="bigint">
-            <constraints nullable="false"/>
-        </column>
-        <column name="role_id" type="int">
-            <constraints nullable="false"/>
-        </column>
-    </createTable>
+        <createTable tableName="users_roles">
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
     </changeSet>
 
     <changeSet author="Olga_Tysevich" id="add-PK-users-roles-table">
