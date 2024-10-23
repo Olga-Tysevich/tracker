@@ -35,7 +35,7 @@ public class RefreshToken implements Serializable {
     @NotNull(message = USER_CANNOT_BE_NULL)
     private User user;
 
-    @Column(name = "refresh_token", unique = true, nullable = false)
+    @Column(name = "refresh_token", nullable = false)
     @NotBlank(message = REFRESH_TOKEN_CANNOT_BE_NULL_OR_EMPTY)
     private String tokenValue;
 

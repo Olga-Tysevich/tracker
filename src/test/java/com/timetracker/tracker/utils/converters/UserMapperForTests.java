@@ -1,6 +1,7 @@
 package com.timetracker.tracker.utils.converters;
 
 import com.timetracker.tracker.dto.req.CreateUserDTO;
+import com.timetracker.tracker.dto.req.UpdateUserDTO;
 import com.timetracker.tracker.dto.req.UserLoginDTO;
 import com.timetracker.tracker.entities.Role;
 import com.timetracker.tracker.entities.User;
@@ -24,7 +25,7 @@ public interface UserMapperForTests {
     UserMapperForTests INSTANCE = Mappers.getMapper(UserMapperForTests.class);
 
     /**
-     * Maps a User entity to a CreateUserDTO, extracting role names from the user's roleSet.
+     * Maps a User entity to a UpdateUserDTO, extracting role names from the user's roleSet.
      *
      * @param user The User entity to map to a CreateUserDTO.
      * @return The mapped CreateUserDTO.
@@ -32,12 +33,11 @@ public interface UserMapperForTests {
     @Mappings({
             @Mapping(source = "name", target = "name"),
             @Mapping(source = "surname", target = "surname"),
-            @Mapping(source = "email", target = "email"),
-            @Mapping(expression = "java(\"" + MockConstants.VALID_PASSWORD_DECODED + "\")", target = "password"),
-            @Mapping(expression = "java(\"" + MockConstants.VALID_PASSWORD_DECODED + "\")", target = "passwordConfirm"),
+            @Mapping(source = "password", target = "password"),
+            @Mapping(source = "password", target = "passwordConfirm"),
             @Mapping(expression = "java(getRoleNames(user.getRoleSet()))", target = "roleNames")
     })
-    CreateUserDTO toCreateUserDTO(User user);
+    UpdateUserDTO toUpdateUserDTO(User user);
 
     /**
      * Maps a User entity to a valid UserLoginDTO.

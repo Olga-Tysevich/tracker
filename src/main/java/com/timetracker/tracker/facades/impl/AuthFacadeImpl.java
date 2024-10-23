@@ -64,8 +64,8 @@ public class AuthFacadeImpl implements AuthFacade {
      *
      * @param req The UserLoginDTO containing user login credentials.
      * @return The LoggedUserDTO with JWT tokens.
-     * @see UserLoginDTO
-     * @see LoggedUserDTO
+     * @see com.timetracker.tracker.dto.req.UserLoginDTO
+     * @see com.timetracker.tracker.dto.resp.LoggedUserDTO
      */
     public LoggedUserDTO loginUser(UserLoginDTO req) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
@@ -79,14 +79,7 @@ public class AuthFacadeImpl implements AuthFacade {
             throw new PasswordMismatchException();
         }
 
-        String accessToken = jwtProvider.generateAccessToken(user);
-        String refreshToken = jwtProvider.generateRefreshToken(user);
-        refreshTokenService.saveRefreshToken(refreshToken, user);
-        return LoggedUserDTO.builder()
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .userDTO(UserMapper.INSTANCE.toDTO(user))
-                .build();
+        return generatePairOfTokens(user);
     }
 
 
@@ -96,18 +89,36 @@ public class AuthFacadeImpl implements AuthFacade {
      * @param refreshToken The refresh token for re-logging in the user.
      * @return The LoggedUserDTO with new JWT tokens.
      * @see com.timetracker.tracker.dto.resp.LoggedUserDTO
-     * @see RefreshTokenService
      */
     @Override
     public LoggedUserDTO reLoginUser(@Valid @NotBlank(message = TOKEN_CANNOT_BE_NULL_OR_EMPTY) String refreshToken) {
-        String email = jwtProvider.getRefreshClaims(refreshToken).getSubject();
-        User user = (User) userDetailsService.loadUserByUsername(email);
-
         if (!jwtProvider.validateRefreshToken(refreshToken)) {
-            refreshTokenService.blockUserRefreshTokens(user);
             throw new InvalidRefreshTokenException();
         }
 
-        return loginUser(new UserLoginDTO(user.getEmail(), user.getPassword()));
+        String email = jwtProvider.getRefreshClaims(refreshToken).getSubject();
+        User user = (User) userDetailsService.loadUserByUsername(email);
+
+        return generatePairOfTokens(user);
+    }
+
+    /**
+     * Generates a pair of access and refresh tokens for the specified user.
+     *
+     * @param user the user for whom the tokens are generated
+     * @return a LoggedUserDTO containing the generated access token, refresh token, and user details
+     * @see com.timetracker.tracker.entities.User
+     * @see com.timetracker.tracker.services.RefreshTokenService
+     */
+    private LoggedUserDTO generatePairOfTokens(User user) {
+        String accessToken = jwtProvider.generateAccessToken(user);
+        String refreshToken = jwtProvider.generateRefreshToken(user);
+
+        refreshTokenService.saveRefreshToken(refreshToken, user);
+        return LoggedUserDTO.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .userDTO(UserMapper.INSTANCE.toDTO(user))
+                .build();
     }
 }

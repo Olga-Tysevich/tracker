@@ -35,13 +35,12 @@ public interface UserFacade {
     void updateUser(UpdateUserDTO req);
 
     /**
-     * et the user with the given ID.
+     * Get current user.
      *
-     * @param id the ID of the user to get.
      * @return the user data.
      * @see com.timetracker.tracker.dto.resp.UserDTO
      */
-    UserDTO getUserById(Long id);
+    UserDTO getCurrentUser();
 
     /**
      * Get a list of users for a specific page with the given request data.

@@ -5,7 +5,6 @@ import com.timetracker.tracker.dto.req.GetUsersForPageDTO;
 import com.timetracker.tracker.dto.req.UpdateUserDTO;
 import com.timetracker.tracker.dto.resp.UserDTO;
 import com.timetracker.tracker.dto.resp.UsersForPageDTO;
-import com.timetracker.tracker.entities.User;
 import com.timetracker.tracker.facades.UserFacade;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -13,7 +12,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import static com.timetracker.tracker.utils.Constants.MIN_ID;
@@ -68,8 +66,7 @@ public class UserController {
      */
     @GetMapping()
     public ResponseEntity<UserDTO> getUser() {
-        Long userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
-        UserDTO userDTO = userFacade.getUserById(userId);
+        UserDTO userDTO = userFacade.getCurrentUser();
         return ResponseEntity.ok(userDTO);
     }
 

@@ -12,58 +12,95 @@ import org.springframework.http.HttpStatus;
 
 import java.util.stream.Stream;
 
-import static com.timetracker.tracker.utils.MockConstants.LOGIN_ENDPOINT;
+import static com.timetracker.tracker.utils.Constants.*;
+import static com.timetracker.tracker.utils.MockConstants.*;
+import static io.restassured.RestAssured.given;
 
 class AuthControllerTest extends BaseTest {
     private final UserMapperForTests userMapper = UserMapperForTests.INSTANCE;
 
     @ParameterizedTest
     @MethodSource("cases")
-    void whenUserAuth_thenStatus200AndGetLoggedUserDTOTest(User user) {
+    void whenUserAuth_thenStatus200AndReturnLoggedUserDTOTest(User user) {
         userRepository.save(user);
-        checkSuccessStatusCodeInPostResponse(
+        checkStatusCodeAndBodyInPostRequest(
                 LOGIN_ENDPOINT,
                 HttpStatus.OK.value(),
                 MockConstants.SCHEME_SOURCE_PATH + MockConstants.LOGGED_USER_SCHEME,
-                userMapper.toValidUserLoginDTO(user)
+                userMapper.toValidUserLoginDTO(user),
+                null
         );
     }
 
     @ParameterizedTest
     @MethodSource("cases")
-    void whenUserNotFound_thenStatus404(User user) {
-        checkFailedStatusCodeInPostResponse(
+    void whenUserNotFound_thenStatus404Test(User user) {
+        checkStatusCodeInPostRequest(
                 LOGIN_ENDPOINT,
                 HttpStatus.NOT_FOUND.value(),
-                userMapper.toInvalidUserLoginDTO(user)
+                userMapper.toInvalidUserLoginDTO(user),
+                null
         );
     }
 
     @ParameterizedTest
     @MethodSource("cases")
-    void whenUserCredInvalid_thenStatus403(User user) {
+    void whenUserCredInvalid_thenStatus403Test(User user) {
         userRepository.save(user);
-        checkFailedStatusCodeInPostResponse(
+        checkStatusCodeInPostRequest(
                 LOGIN_ENDPOINT,
                 HttpStatus.FORBIDDEN.value(),
-                userMapper.toInvalidUserLoginDTO(user)
+                userMapper.toInvalidUserLoginDTO(user),
+                null
         );
     }
 
+
     @Test
-    void login() {
+    void whenLogout_thenSetCookieTest() {
+        given(requestSpecification)
+                .header(TOKEN_HEADER, TOKEN_TYPE + getRefreshToken())
+                .when()
+                .post(LOGOUT_ENDPOINT)
+                .then()
+                .statusCode(HttpStatus.OK.value());
+
     }
 
     @Test
-    void refresh() {
+    void whenRefresh_thenSetCookieTest() {
+        String token = getRefreshToken();
+        given(requestSpecification)
+                .cookie(REFRESH_TOKEN_KEY, token)
+                .when()
+                .post(REFRESH_TOKEN_ENDPOINT)
+                .then()
+                .statusCode(HttpStatus.OK.value());
     }
 
     @Test
-    void logout() {
+    void whenInvalidRefreshToken_thenStatus401() {
+        given(requestSpecification)
+                .cookie(REFRESH_TOKEN_KEY, INVALID_TOKEN)
+                .when()
+                .post(REFRESH_TOKEN_ENDPOINT)
+                .then()
+                .statusCode(HttpStatus.UNAUTHORIZED.value());
+    }
+
+    private String getRefreshToken() {
+        return given(requestSpecification)
+                .body(MockConstants.ADMIN_CRED)
+                .when()
+                .post(MockConstants.LOGIN_ENDPOINT)
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .cookie(REFRESH_TOKEN_KEY);
     }
 
     static Stream<Arguments> cases() {
-        return MockUtils.generateUser(MockConstants.NUMBER_OF_OBJECTS).stream()
+        return MockUtils.generateUsers(MockConstants.NUMBER_OF_OBJECTS).stream()
                 .map(Arguments::of);
     }
 }

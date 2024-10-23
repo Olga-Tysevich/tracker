@@ -23,6 +23,6 @@ public interface RefreshTokenService {
      * @see com.timetracker.tracker.entities.User
      * @see com.timetracker.tracker.entities.RefreshToken
      */
-    void blockUserRefreshTokens(User user);
+    void removeUserRefreshTokens(User user);
 
 }

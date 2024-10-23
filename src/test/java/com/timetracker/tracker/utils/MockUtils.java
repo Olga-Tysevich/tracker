@@ -1,5 +1,7 @@
 package com.timetracker.tracker.utils;
 
+import com.timetracker.tracker.dto.req.CreateUserDTO;
+import com.timetracker.tracker.dto.resp.UserDTO;
 import com.timetracker.tracker.entities.Project;
 import com.timetracker.tracker.entities.Record;
 import com.timetracker.tracker.entities.Role;
@@ -32,7 +34,27 @@ public class MockUtils {
                 .build();
     }
 
-    public static List<User> generateUser(int numberOfObjects) {
+    public static User getAdmin() {
+        return User.builder()
+                .name(ADMIN_EMAIL)
+                .surname(ADMIN_EMAIL)
+                .email(ADMIN_EMAIL)
+                .password(VALID_PASSWORD)
+                .roleSet(Set.of(new Role(1, RoleEnum.ROLE_ADMIN)))
+                .build();
+    }
+
+    public static User getUser() {
+        return User.builder()
+                .name(VALID_USER_NAME)
+                .surname(VALID_USER_SURNAME)
+                .email(USER_EMAIL)
+                .password(VALID_PASSWORD)
+                .roleSet(Set.of(new Role(2, RoleEnum.ROLE_USER)))
+                .build();
+    }
+
+    public static List<User> generateUsers(int numberOfObjects) {
         return ehRandom.objects(User.class, numberOfObjects)
                 .peek(user -> {
                     user.setRoleSet(Set.of(new Role(2, RoleEnum.ROLE_USER)));
@@ -42,14 +64,14 @@ public class MockUtils {
                 .toList();
     }
 
-    public static List<Project> generateProject(int numberOfObjects) {
+    public static List<Project> generateProjects(int numberOfObjects) {
         return ehRandom.objects(Project.class, numberOfObjects)
                 .toList();
     }
 
-    public static List<Record> generateRecord(int numberOfObjects) {
-        List<User> users = generateUser(numberOfObjects);
-        List<Project> projects = generateProject(numberOfObjects);
+    public static List<Record> generateRecords(int numberOfObjects) {
+        List<User> users = generateUsers(numberOfObjects);
+        List<Project> projects = generateProjects(numberOfObjects);
         return ehRandom.objects(Record.class, numberOfObjects)
                 .peek(record -> {
                     User user = users.get(RANDOM.nextInt(users.size()));
@@ -58,6 +80,17 @@ public class MockUtils {
                     record.setProject(project);
                 })
                 .toList();
+    }
+
+    public static CreateUserDTO getCreateUserDTO() {
+        return CreateUserDTO.builder()
+                .name(VALID_USER_NAME)
+                .surname(VALID_USER_SURNAME)
+                .email(VALID_USER_EMAIL)
+                .password(VALID_PASSWORD)
+                .passwordConfirm(VALID_PASSWORD)
+                .roleNames(Set.of(RoleEnum.ROLE_USER.name()))
+                .build();
     }
 
 }

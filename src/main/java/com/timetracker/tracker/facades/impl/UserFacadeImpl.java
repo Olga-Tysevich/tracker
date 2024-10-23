@@ -18,6 +18,7 @@ import com.timetracker.tracker.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
@@ -92,15 +93,15 @@ public class UserFacadeImpl implements UserFacade {
     }
 
     /**
-     * Method to retrieve a user by id.
+     * Method to retrieve current user from SecurityContextHolder.
      *
-     * @param id The id of the user to retrieve.
      * @return The user DTO object.
      * @throws UserNotFoundException if the user is not found.
      * @see com.timetracker.tracker.dto.resp.UserDTO
      */
     @Override
-    public UserDTO getUserById(Long id) {
+    public UserDTO getCurrentUser() {
+        Long id = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
         return Optional.ofNullable(id)
                 .map(userService::getUserById)
                 .orElseThrow(UserNotFoundException::new)

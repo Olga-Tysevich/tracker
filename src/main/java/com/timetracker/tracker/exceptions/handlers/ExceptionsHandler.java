@@ -14,6 +14,9 @@ import org.springframework.security.authentication.InternalAuthenticationService
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.HttpMediaTypeException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingRequestCookieException;
+import org.springframework.web.bind.MissingRequestHeaderException;
+import org.springframework.web.bind.MissingRequestValueException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
@@ -60,7 +63,7 @@ public class ExceptionsHandler {
      * @return ResponseEntity containing the exception response.
      * @see com.timetracker.tracker.exceptions.InvalidRefreshTokenException
      */
-    @ExceptionHandler({HttpMessageNotReadableException.class, InvalidRefreshTokenException.class})
+    @ExceptionHandler({HttpMessageNotReadableException.class})
     public ResponseEntity<?> httpMessageNotReadableException(Exception e) {
         return buildExceptionResponse(HttpStatus.BAD_REQUEST, e);
     }
@@ -122,8 +125,8 @@ public class ExceptionsHandler {
      * @return ResponseEntity containing the exception response.
      * @see com.timetracker.tracker.exceptions.UnauthorizedException
      */
-    @ExceptionHandler(UnauthorizedException.class)
-    public ResponseEntity<?> unAuthExceptions(UnauthorizedException e) {
+    @ExceptionHandler({UnauthorizedException.class, InvalidRefreshTokenException.class})
+    public ResponseEntity<?> unAuthExceptions(Exception e) {
         return buildExceptionResponse(HttpStatus.UNAUTHORIZED, e);
     }
 
@@ -134,8 +137,9 @@ public class ExceptionsHandler {
      * @return ResponseEntity containing the exception response.
      * @see com.timetracker.tracker.exceptions.UnauthorizedException
      */
-    @ExceptionHandler({UnsupportedDTO.class, HttpMediaTypeException.class})
-    public ResponseEntity<?> unsupportedExceptions(Exception e) {
+    @ExceptionHandler({UnsupportedDTO.class, HttpMediaTypeException.class, MissingRequestCookieException.class,
+            MissingRequestHeaderException.class, MissingRequestValueException.class})
+    public ResponseEntity<?> badRequestExceptions(Exception e) {
         return buildExceptionResponse(HttpStatus.BAD_REQUEST, e);
     }
 

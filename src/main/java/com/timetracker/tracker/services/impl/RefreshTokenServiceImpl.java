@@ -48,7 +48,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
      * @see com.timetracker.tracker.entities.RefreshToken
      */
     @Override
-    public void blockUserRefreshTokens(User user) {
-
+    public void removeUserRefreshTokens(User user) {
+        refreshTokenRepository.deleteByUser(user);
     }
 }

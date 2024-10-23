@@ -19,6 +19,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.HashSet;
@@ -26,8 +27,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.IntStream;
 
+import static com.timetracker.tracker.utils.Constants.TOKEN_HEADER;
+import static com.timetracker.tracker.utils.Constants.TOKEN_TYPE;
+import static com.timetracker.tracker.utils.MockConstants.USER_ID_PARAM;
+import static io.restassured.RestAssured.given;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
-import static org.hamcrest.Matchers.lessThan;
+import static org.hamcrest.Matchers.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -58,7 +63,7 @@ public class BaseTest {
     public void insertData() {
         Set<User> users = new HashSet<>();
         Set<Project> projects = new HashSet<>();
-        List<Record> records = MockUtils.generateRecord(MockConstants.NUMBER_OF_OBJECTS);
+        List<Record> records = MockUtils.generateRecords(MockConstants.NUMBER_OF_OBJECTS);
 
         IntStream.range(0, records.size())
                 .forEach(i -> {
@@ -68,6 +73,8 @@ public class BaseTest {
                 });
 
         userRepository.saveAll(users);
+        userRepository.save(MockUtils.getAdmin());
+        userRepository.save(MockUtils.getUser());
         projectRepository.saveAll(projects);
         recordRepository.saveAll(records);
     }
@@ -80,8 +87,35 @@ public class BaseTest {
         userRepository.deleteAll();
     }
 
-    protected ValidatableResponse checkStatusCodeInGetResponse(String url, int code, String schema) {
+    protected ValidatableResponse checkStatusCodeInGetRequest(String url, int code, String validUserDataJson) {
+        String accessToken = getAccessToken(validUserDataJson);
         return RestAssured.given(requestSpecification)
+                .header(TOKEN_HEADER, TOKEN_TYPE + accessToken)
+                .when()
+                .get(url)
+                .then()
+                .statusCode(code)
+                .time(lessThan(MockConstants.DEFAULT_TIMEOUT));
+    }
+
+    protected ValidatableResponse checkStatusCodeInDeleteRequest(String url, int code, Long id, String validUserDataJson) {
+        String accessToken = getAccessToken(validUserDataJson);
+        return RestAssured.given(requestSpecification)
+                .header(TOKEN_HEADER, TOKEN_TYPE + accessToken)
+                .param(USER_ID_PARAM, id)
+                .when()
+                .delete(url)
+                .then()
+                .statusCode(code)
+                .time(lessThan(MockConstants.DEFAULT_TIMEOUT));
+    }
+
+    protected ValidatableResponse checkStatusCodeAndBodyInGetRequest(String url, int code, String schema,
+                                                                     String validUserDataJson) {
+        String accessToken = getAccessToken(validUserDataJson);
+        return RestAssured.given(requestSpecification)
+                .header(TOKEN_HEADER, TOKEN_TYPE + accessToken)
+                .when()
                 .get(url)
                 .then()
                 .statusCode(code)
@@ -89,8 +123,11 @@ public class BaseTest {
                 .time(lessThan(MockConstants.DEFAULT_TIMEOUT));
     }
 
-    protected ValidatableResponse checkSuccessStatusCodeInPostResponse(String url, int code, String schema, Object requestBody) {
+    protected ValidatableResponse checkStatusCodeAndBodyInPostRequest(String url, int code, String schema,
+                                                                      Object requestBody, String validUserDataJson) {
+        String accessToken = getAccessToken(validUserDataJson);
         return RestAssured.given(requestSpecification)
+                .header(TOKEN_HEADER, TOKEN_TYPE + accessToken)
                 .body(requestBody)
                 .port(MockConstants.DEFAULT_APP_PORT)
                 .post(url)
@@ -100,14 +137,29 @@ public class BaseTest {
                 .time(lessThan(MockConstants.DEFAULT_TIMEOUT));
     }
 
-    protected ValidatableResponse checkFailedStatusCodeInPostResponse(String url, int code, Object requestBody) {
+    protected ValidatableResponse checkStatusCodeInPostRequest(String url, int code,
+                                                               Object requestBody, String validUserDataJson) {
+        String accessToken = getAccessToken(validUserDataJson);
         return RestAssured.given(requestSpecification)
+                .header(TOKEN_HEADER, TOKEN_TYPE + accessToken)
                 .body(requestBody)
                 .port(MockConstants.DEFAULT_APP_PORT)
                 .post(url)
                 .then()
                 .statusCode(code)
                 .time(lessThan(MockConstants.DEFAULT_TIMEOUT));
+    }
+
+    protected String getAccessToken(String validUserDataJson) {
+        return given(requestSpecification)
+                .body(validUserDataJson)
+                .when()
+                .post(MockConstants.LOGIN_ENDPOINT)
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .extract().response()
+                .jsonPath()
+                .getString("accessToken");
     }
 
 }

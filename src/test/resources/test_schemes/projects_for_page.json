@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "projectsForPage": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" },
+          "description": { "type": "string" }
+        },
+        "required": ["id", "name", "description"]
+      }
+    },
+    "totalItems": {
+      "type": "integer"
+    }
+  },
+  "required": ["projectsForPage", "totalItems"]
+}
