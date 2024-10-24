@@ -3,7 +3,7 @@ WORKDIR /opt/app
 COPY mvnw pom.xml ./
 COPY .env ./
 COPY ./src ./src
-RUN mvn clean install -DskipTests
+RUN mvn clean install
 
 FROM eclipse-temurin:17-jre-jammy
 WORKDIR /opt/app

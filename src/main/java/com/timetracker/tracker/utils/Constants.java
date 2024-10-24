@@ -36,6 +36,7 @@ public class Constants {
     public static final String START_DATE_CANNOT_BE_NULL = "Start date cannot be null!";
     public static final String END_DATE_CANNOT_BE_NULL = "End date cannot be null!";
     public static final String DATE_PATTERN = "yyyy-MM-dd";
+    public static final String DURATION_PATTERN = "1w 1d 1h 1m";
     public static final String DURATION_CANNOT_BE_NULL = "Duration cannot be null!";
     public static final String USER_FULL_NAME_CANNOT_BE_NULL = "User full name cannot be null!";
     public static final String PASSWORD_CANNOT_BE_NULL_OR_EMPTY = "Password cannot be null or empty!";

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.DateSerializer;
 import com.timetracker.tracker.utils.serializers.DurationDeserializer;
 import com.timetracker.tracker.utils.serializers.DurationSerializer;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +15,7 @@ import lombok.NoArgsConstructor;
 import java.sql.Date;
 import java.time.Duration;
 
-import static com.timetracker.tracker.utils.Constants.RECORD_ID_CANNOT_BE_NULL;
+import static com.timetracker.tracker.utils.Constants.*;
 
 /**
  * A data transfer object (DTO) class for updating a record.
@@ -32,6 +33,7 @@ public class UpdateRecordDTO {
      * The record start date for updating a record. May be {@literal null}.
      */
     @JsonSerialize(using = DateSerializer.class)
+    @Schema(example = DATE_PATTERN)
     private Date startDate;
 
     /**
@@ -44,6 +46,7 @@ public class UpdateRecordDTO {
      */
     @JsonSerialize(using = DurationSerializer.class)
     @JsonDeserialize(using = DurationDeserializer.class)
+    @Schema(example = DURATION_PATTERN)
     private Duration duration;
 
 }
