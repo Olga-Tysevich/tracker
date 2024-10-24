@@ -4,7 +4,7 @@
 ## 1. Клонировать репозиторий
 
 ```dtd
-git clone -b new_version git@github.com:Olga-Tysevich/tracker.git
+git clone -b new_version git@github.com:Olga-Tysevich/tracker.git 
 ```
 ### Убедиться что ветка проекта new_version!!!
 
