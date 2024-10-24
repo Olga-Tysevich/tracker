@@ -4,7 +4,7 @@
 ## 1. Клонировать репозиторий
 
 ```dtd
-git clone https://git-revinci.krainet.by/belrw/belrw-library.git
+git clone git@github.com:Olga-Tysevich/tracker.git
 ```
 ### Переключить ветку проекта new_version!!!
 
