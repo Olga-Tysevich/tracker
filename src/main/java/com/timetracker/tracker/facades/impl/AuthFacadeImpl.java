@@ -1,6 +1,6 @@
 package com.timetracker.tracker.facades.impl;
 
-import com.timetracker.tracker.conf.JwtProvider;
+import com.timetracker.tracker.services.JwtService;
 import com.timetracker.tracker.dto.req.UserLoginDTO;
 import com.timetracker.tracker.dto.resp.LoggedUserDTO;
 import com.timetracker.tracker.entities.User;
@@ -55,9 +55,9 @@ public class AuthFacadeImpl implements AuthFacade {
     /**
      * JwtProvider bean.
      *
-     * @see JwtProvider
+     * @see JwtService
      */
-    private final JwtProvider jwtProvider;
+    private final JwtService jwtService;
 
     /**
      * Authenticates user with provided credentials and generates JWT tokens.
@@ -92,11 +92,11 @@ public class AuthFacadeImpl implements AuthFacade {
      */
     @Override
     public LoggedUserDTO reLoginUser(@Valid @NotBlank(message = TOKEN_CANNOT_BE_NULL_OR_EMPTY) String refreshToken) {
-        if (!jwtProvider.validateRefreshToken(refreshToken)) {
+        if (!jwtService.validateRefreshToken(refreshToken)) {
             throw new InvalidRefreshTokenException();
         }
 
-        String email = jwtProvider.getRefreshClaims(refreshToken).getSubject();
+        String email = jwtService.getRefreshClaims(refreshToken).getSubject();
         User user = (User) userDetailsService.loadUserByUsername(email);
 
         return generatePairOfTokens(user);
@@ -111,8 +111,8 @@ public class AuthFacadeImpl implements AuthFacade {
      * @see com.timetracker.tracker.services.RefreshTokenService
      */
     private LoggedUserDTO generatePairOfTokens(User user) {
-        String accessToken = jwtProvider.generateAccessToken(user);
-        String refreshToken = jwtProvider.generateRefreshToken(user);
+        String accessToken = jwtService.generateAccessToken(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
 
         refreshTokenService.saveRefreshToken(refreshToken, user);
         return LoggedUserDTO.builder()

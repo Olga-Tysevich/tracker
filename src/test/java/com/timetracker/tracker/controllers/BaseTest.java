@@ -20,8 +20,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.Objects;
-
 import static com.timetracker.tracker.utils.Constants.TOKEN_HEADER;
 import static com.timetracker.tracker.utils.Constants.TOKEN_TYPE;
 import static com.timetracker.tracker.utils.MockConstants.*;

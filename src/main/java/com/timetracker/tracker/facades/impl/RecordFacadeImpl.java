@@ -15,7 +15,6 @@ import com.timetracker.tracker.mappers.RecordMapper;
 import com.timetracker.tracker.repositories.specifications.RecordFilter;
 import com.timetracker.tracker.services.ProjectService;
 import com.timetracker.tracker.services.RecordService;
-import com.timetracker.tracker.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -44,12 +43,6 @@ public class RecordFacadeImpl implements RecordFacade {
      */
     private final RecordService recordService;
     /**
-     * UserService bean.
-     *
-     * @see com.timetracker.tracker.services.UserService
-     */
-    private final UserService userService;
-    /**
      * ProjectService bean.
      *
      * @see com.timetracker.tracker.services.ProjectService
@@ -70,7 +63,7 @@ public class RecordFacadeImpl implements RecordFacade {
         if (Objects.isNull(req)) {
             throw new IllegalArgumentException(REQ_CANNOT_BE_NULL);
         }
-        User user = userService.getUserById(req.getUserId()).orElseThrow(UserNotFoundException::new);
+        User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         Project project = projectService.getProjectById(req.getProjectId()).orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
         Record record = RecordMapper.INSTANCE.toEntity(user, project, req);
         recordService.createRecord(record);
@@ -106,7 +99,22 @@ public class RecordFacadeImpl implements RecordFacade {
     }
 
     /**
-     * Retrieves a list of records for a specific page.
+     * Retrieves a list of records for a specific page for User.
+     *
+     * @param req the request for getting records for a page.
+     * @return the list of records for the specified page.
+     * @throws NotFoundException if the request is {@literal null}.
+     * @see com.timetracker.tracker.dto.req.GetRecordsForPageDTO
+     */
+    @Override
+    public RecordsForPageDTO getUserRecordsForPage(GetRecordsForPageDTO req) {
+        long userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+        req.setUserId(userId);
+        return getRecordsForPageByFilter(req);
+    }
+
+    /**
+     * Retrieves a list of records for a specific page for Admin.
      *
      * @param req the request for getting records for a page.
      * @return the list of records for the specified page.
@@ -115,6 +123,24 @@ public class RecordFacadeImpl implements RecordFacade {
      */
     @Override
     public RecordsForPageDTO getRecordsForPage(GetRecordsForPageDTO req) {
+        User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        if (user.hasRoleAdmin()) {
+            return getRecordsForPageByFilter(req);
+        } else {
+            return getUserRecordsForPage(req);
+        }
+    }
+
+    /**
+     * Retrieves a list of records for a specific page.
+     *
+     * @param req the request for getting records for a page.
+     * @return the list of records for the specified page.
+     * @throws NotFoundException if the request is {@literal null}.
+     * @see com.timetracker.tracker.dto.req.GetRecordsForPageDTO
+     */
+    private RecordsForPageDTO getRecordsForPageByFilter(GetRecordsForPageDTO req) {
+
         Page<Record> result = Optional.ofNullable(req)
                 .map(r -> {
                     PageRequest request = PageRequest.of(r.getPageNum(), r.getCountPerPage());
@@ -124,5 +150,6 @@ public class RecordFacadeImpl implements RecordFacade {
                 .orElseThrow(NotFoundException::new);
         return RecordMapper.INSTANCE.toRecordList(result.getContent(), result.getTotalElements());
     }
+
 
 }

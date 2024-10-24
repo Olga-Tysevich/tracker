@@ -103,4 +103,5 @@ public class RecordServiceImpl implements RecordService {
         exist.setEndDate(RecordMapper.INSTANCE.getEndDate(record.getStartDate(), record.getDuration()));
         return exist;
     }
+
 }

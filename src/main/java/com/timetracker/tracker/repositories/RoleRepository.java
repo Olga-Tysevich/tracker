@@ -20,5 +20,4 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
      * @return The user Role from database.
      */
     Role getByRole(RoleEnum role);
-
 }

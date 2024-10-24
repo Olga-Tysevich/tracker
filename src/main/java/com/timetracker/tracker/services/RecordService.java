@@ -44,7 +44,7 @@ public interface RecordService {
     Optional<Record> getRecordById(Long id);
 
     /**
-     * Retrieves a page of records based on the parameters provided in the PageRequest object and the RecordFilter object.
+     * Retrieves a page of records based on the parameters provided in the PageRequest object and the RecordFilter object for concrete User.
      *
      * @param req    The PageRequest object containing the parameters for retrieving records for a page.
      * @param filter The RecordFilter object that contains the filter parameters for retrieving records for the page.

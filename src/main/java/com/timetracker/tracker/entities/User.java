@@ -92,4 +92,9 @@ public class User implements UserDetails, Serializable {
         return true;
     }
 
+    public boolean hasRoleAdmin() {
+        return roleSet.stream()
+                .anyMatch(role -> role.getRole() == RoleEnum.ROLE_ADMIN);
+    }
+
 }

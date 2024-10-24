@@ -1,6 +1,7 @@
-package com.timetracker.tracker.conf;
+package com.timetracker.tracker.services.impl;
 
 import com.timetracker.tracker.entities.User;
+import com.timetracker.tracker.services.JwtService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -25,7 +26,7 @@ import static com.timetracker.tracker.utils.Constants.ROLE_CLAIM;
  */
 @Component
 @Slf4j
-public class JwtProvider {
+public class JwtProviderImpl implements JwtService {
     /**
      * The JWT access key secret is used to sign and verify access tokens.
      */
@@ -83,7 +84,7 @@ public class JwtProvider {
     }
 
     /**
-     * Validates JWT access token.This method calls {@link JwtProvider#validateToken(String, Key)}.
+     * Validates JWT access token.This method calls {@link JwtProviderImpl#validateToken(String, Key)}.
      *
      * @param accessToken String representation of JWT access token.
      * @return true if the JWT access token is valid, false otherwise.
@@ -93,7 +94,7 @@ public class JwtProvider {
     }
 
     /**
-     * Validates JWT refresh token.This method calls {@link JwtProvider#validateToken(String, Key)}.
+     * Validates JWT refresh token.This method calls {@link JwtProviderImpl#validateToken(String, Key)}.
      *
      * @param refreshToken String representation of JWT refresh token.
      * @return true if the JWT refresh token is valid, false otherwise.

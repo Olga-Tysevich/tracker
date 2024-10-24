@@ -1,6 +1,6 @@
 package com.timetracker.tracker.filters;
 
-import com.timetracker.tracker.conf.JwtProvider;
+import com.timetracker.tracker.services.JwtService;
 import com.timetracker.tracker.exceptions.UnauthorizedException;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
@@ -33,9 +33,9 @@ import static com.timetracker.tracker.utils.Constants.*;
 public class JwtAuthFilter extends OncePerRequestFilter {
     /**
      * JwtProvider bean.
-     * @see JwtProvider
+     * @see JwtService
      */
-    private final JwtProvider jwtProvider;
+    private final JwtService jwtService;
     /**
      * UserDetailsService bean.
      * @see com.timetracker.tracker.services.impl.UserDetailsServiceImpl
@@ -64,11 +64,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             }
 
             String jwt = header.substring(TOKEN_TYPE.length());
-            if (!jwtProvider.validateAccessToken(jwt)) {
+            if (!jwtService.validateAccessToken(jwt)) {
                 throw new UnauthorizedException();
             }
 
-            String email = jwtProvider.getAccessClaims(jwt).getSubject();
+            String email = jwtService.getAccessClaims(jwt).getSubject();
             if (StringUtils.isNotBlank(email) && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(email);
                 SecurityContext context = SecurityContextHolder.createEmptyContext();

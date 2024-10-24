@@ -34,7 +34,17 @@ public interface RecordFacade {
     void updateRecord(UpdateRecordDTO req);
 
     /**
-     * Retrieves records for a specific page based on the parameters provided in the GetRecordsForPageDTO object.
+     * Retrieves records for a specific page based on the parameters provided in the GetRecordsForPageDTO object for concrete User.
+     *
+     * @param req The GetRecordsForPageDTO object containing the parameters for retrieving records for a page.
+     * @return A RecordsForPageDTO object containing the records for the specified page.
+     * @see com.timetracker.tracker.dto.req.GetRecordsForPageDTO
+     * @see com.timetracker.tracker.dto.resp.RecordsForPageDTO
+     */
+    RecordsForPageDTO getUserRecordsForPage(GetRecordsForPageDTO req);
+
+    /**
+     * Retrieves records for a specific page based on the parameters provided in the GetRecordsForPageDTO object for Admin.
      *
      * @param req The GetRecordsForPageDTO object containing the parameters for retrieving records for a page.
      * @return A RecordsForPageDTO object containing the records for the specified page.
