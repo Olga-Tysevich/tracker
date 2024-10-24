@@ -1,7 +1,10 @@
 package com.timetracker.tracker.services.impl;
 
 import com.timetracker.tracker.entities.User;
-import com.timetracker.tracker.exceptions.*;
+import com.timetracker.tracker.exceptions.InvalidRole;
+import com.timetracker.tracker.exceptions.NotFoundException;
+import com.timetracker.tracker.exceptions.PasswordMismatchException;
+import com.timetracker.tracker.exceptions.UserAlreadyExist;
 import com.timetracker.tracker.repositories.UserRepository;
 import com.timetracker.tracker.services.UserService;
 import lombok.RequiredArgsConstructor;

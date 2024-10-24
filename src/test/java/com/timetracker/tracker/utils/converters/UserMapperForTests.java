@@ -2,12 +2,16 @@ package com.timetracker.tracker.utils.converters;
 
 import com.timetracker.tracker.dto.req.UpdateUserDTO;
 import com.timetracker.tracker.dto.req.UserLoginDTO;
+import com.timetracker.tracker.entities.Role;
 import com.timetracker.tracker.entities.User;
 import com.timetracker.tracker.utils.MockConstants;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Mapper interface for mapping User entities to UserDTOs and vice versa.
@@ -58,4 +62,10 @@ public interface UserMapperForTests {
     })
     UserLoginDTO toInvalidUserLoginDTO(User user);
 
+    default Set<String> getRoleNames(Set<Role> roles) {
+        return roles.stream()
+                .map(Role::getRole)
+                .map(Enum::name)
+                .collect(Collectors.toSet());
+    }
 }
