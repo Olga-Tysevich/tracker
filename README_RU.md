@@ -21,4 +21,4 @@ git clone -b new_version git@github.com:Olga-Tysevich/tracker.git
 docker-compose up --build 
 ```
 
-Сервис доступен по URL http://localhost:8500/admin/
+Сервис доступен по URL http://localhost:8080/http://localhost:8080//api/tracker
