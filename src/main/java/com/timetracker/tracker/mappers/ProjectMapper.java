@@ -10,6 +10,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Mapper interface for mapping Project entities and DTOs.
@@ -38,8 +39,8 @@ public interface ProjectMapper {
      * @return the updated Project entity.
      */
     default Project mergeReqAndEntity(Project project, UpdateProjectDTO req) {
-        project.setName(req.getName());
-        project.setDescription(req.getDescription());
+        project.setName(Objects.requireNonNullElse(req.getName(), project.getName()));
+        project.setDescription(Objects.requireNonNullElse(req.getDescription(), project.getName()));
         return project;
     }
 

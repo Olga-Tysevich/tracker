@@ -1,6 +1,7 @@
 package com.timetracker.tracker.controllers;
 
 import com.timetracker.tracker.dto.req.CreateUserDTO;
+import com.timetracker.tracker.dto.resp.UserDTO;
 import com.timetracker.tracker.entities.User;
 import com.timetracker.tracker.entities.enums.RoleEnum;
 import com.timetracker.tracker.utils.MockConstants;
@@ -12,28 +13,30 @@ import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
-import static com.timetracker.tracker.utils.Constants.TOKEN_HEADER;
-import static com.timetracker.tracker.utils.Constants.TOKEN_TYPE;
 import static com.timetracker.tracker.utils.MockConstants.*;
-import static io.restassured.RestAssured.given;
-import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class UserControllerTest extends BaseTest {
 
     @Test
-    void whenGetUsers_thenStatus200AndReturnUsersFoPageDTOTest() {
-        String accessToken = getAccessToken(MockConstants.ADMIN_CRED);
-        given(requestSpecification)
-                .header(TOKEN_HEADER, TOKEN_TYPE + accessToken)
-                .param(COUNT_PER_PAGE_PARAM, DEFAULT_COUNT_PER_PAGE)
-                .param(PAGE_PARAM, DEFAULT_PAGE)
-                .when()
-                .get(GET_USERS_FOR_ADMIN_ENDPOINT)
-                .then()
-                .statusCode(HttpStatus.OK.value())
-                .body(matchesJsonSchemaInClasspath(SCHEME_SOURCE_PATH + USERS_FOR_PAGE_SCHEME))
-                .time(lessThan(MockConstants.DEFAULT_TIMEOUT));
+    void whenGetUsers_thenStatus200AndReturnUsersForPageDTOTest() {
+        List<User> users = MockUtils.generateUsers(DEFAULT_NUMBER_OF_OBJECTS);
+        userRepository.saveAll(users);
+        List<User> allUsers = userRepository.findAll();
+        long itemsPerPage = DEFAULT_COUNT_PER_PAGE > allUsers.size() ? allUsers.size() : DEFAULT_COUNT_PER_PAGE;
+        ValidatableResponse response = checkStatusCodeAndBodyInGetObjectForPageReq(
+                GET_USERS_FOR_ADMIN_ENDPOINT,
+                HttpStatus.OK.value(),
+                SCHEME_SOURCE_PATH + USERS_FOR_PAGE_SCHEME,
+                ADMIN_CRED
+        );
+
+        List<UserDTO> usersForPage = response.extract().jsonPath().getList("usersForPage", UserDTO.class);
+        assertEquals(itemsPerPage, usersForPage.size(), "The size of the projects list should be " + itemsPerPage);
+
+        int totalItems = response.extract().jsonPath().getInt(TOTAL_ITEMS_KEY);
+        assertEquals(allUsers.size(), totalItems, "The totalItems should be " + allUsers.size());
     }
 
     @Test
@@ -147,6 +150,16 @@ class UserControllerTest extends BaseTest {
                 DELETE_USER_ENDPOINT,
                 HttpStatus.OK.value(),
                 forDelete.getId(),
+                ADMIN_CRED
+        );
+    }
+
+    @Test
+    void whenBadRequestDeleteUser_thanStatus400Test() {
+        checkStatusCodeInDeleteRequest(
+                DELETE_USER_ENDPOINT,
+                HttpStatus.BAD_REQUEST.value(),
+                null,
                 ADMIN_CRED
         );
     }

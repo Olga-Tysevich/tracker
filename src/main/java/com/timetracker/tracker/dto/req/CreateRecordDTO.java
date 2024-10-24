@@ -1,7 +1,10 @@
 package com.timetracker.tracker.dto.req;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.timetracker.tracker.utils.DurationDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.timetracker.tracker.utils.serializers.DateSerializer;
+import com.timetracker.tracker.utils.serializers.DurationDeserializer;
+import com.timetracker.tracker.utils.serializers.DurationSerializer;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -37,10 +40,12 @@ public class CreateRecordDTO {
     private String description;
 
     @NotNull(message = START_DATE_CANNOT_BE_NULL)
+    @JsonSerialize(using = DateSerializer.class)
     @DateTimeFormat(pattern = DATE_PATTERN)
     private Date startDate;
 
     @NotNull(message = DURATION_CANNOT_BE_NULL)
+    @JsonSerialize(using = DurationSerializer.class)
     @JsonDeserialize(using = DurationDeserializer.class)
     private Duration duration;
 

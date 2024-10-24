@@ -1,7 +1,10 @@
 package com.timetracker.tracker.dto.req;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.timetracker.tracker.utils.DurationDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.DateSerializer;
+import com.timetracker.tracker.utils.serializers.DurationDeserializer;
+import com.timetracker.tracker.utils.serializers.DurationSerializer;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,6 +31,7 @@ public class UpdateRecordDTO {
     /**
      * The record start date for updating a record. May be {@literal null}.
      */
+    @JsonSerialize(using = DateSerializer.class)
     private Date startDate;
 
     /**
@@ -38,6 +42,7 @@ public class UpdateRecordDTO {
     /**
      * The record duration for updating a record. May be {@literal null}.
      */
+    @JsonSerialize(using = DurationSerializer.class)
     @JsonDeserialize(using = DurationDeserializer.class)
     private Duration duration;
 

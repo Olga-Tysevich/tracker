@@ -1,5 +1,6 @@
 package com.timetracker.tracker.entities;
 
+import com.timetracker.tracker.entities.enums.RoleEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -90,4 +91,5 @@ public class User implements UserDetails, Serializable {
     public boolean isEnabled() {
         return true;
     }
+
 }

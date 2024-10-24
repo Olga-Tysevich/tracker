@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "projectsForPage": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "userFullName": { "type": "string" },
+          "projectName": { "type": "string" },
+          "description": { "type": "string" },
+          "startDate": { "type": "string" },
+          "duration": { "type": "string" },
+          "endDate": { "type": "string" }
+        },
+        "required": ["id", "userFullName", "projectName", "description", "startDate", "duration", "endDate"]
+      }
+    },
+    "totalItems": {
+      "type": "integer"
+    }
+  },
+  "required": ["recordsForPage", "totalItems"]
+}

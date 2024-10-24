@@ -1,7 +1,6 @@
 package com.timetracker.tracker.utils;
 
 import com.timetracker.tracker.dto.req.CreateUserDTO;
-import com.timetracker.tracker.dto.resp.UserDTO;
 import com.timetracker.tracker.entities.Project;
 import com.timetracker.tracker.entities.Record;
 import com.timetracker.tracker.entities.Role;
@@ -27,7 +26,7 @@ public class MockUtils {
                 .randomizationDepth(3)
                 .charset(StandardCharsets.UTF_8)
                 .stringLengthRange(5, 50)
-                .collectionSizeRange(1, NUMBER_OF_OBJECTS)
+                .collectionSizeRange(1, DEFAULT_NUMBER_OF_OBJECTS)
                 .scanClasspathForConcreteTypes(true)
                 .overrideDefaultInitialization(false)
                 .excludeField(FieldPredicates.named("id"))
@@ -69,9 +68,7 @@ public class MockUtils {
                 .toList();
     }
 
-    public static List<Record> generateRecords(int numberOfObjects) {
-        List<User> users = generateUsers(numberOfObjects);
-        List<Project> projects = generateProjects(numberOfObjects);
+    public static List<Record> generateRecords(List<User> users, List<Project> projects, int numberOfObjects) {
         return ehRandom.objects(Record.class, numberOfObjects)
                 .peek(record -> {
                     User user = users.get(RANDOM.nextInt(users.size()));

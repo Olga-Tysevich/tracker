@@ -1,8 +1,9 @@
-package com.timetracker.tracker.utils;
+package com.timetracker.tracker.utils.serializers;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
+import jakarta.validation.ConstraintViolationException;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -33,15 +34,17 @@ public class DurationDeserializer extends JsonDeserializer<Duration> {
         int lastPos = 0;
         for (char token : DURATION_TOKENS) {
             int currentPos = source.indexOf(token);
-            int value = Integer.parseInt(source.substring(lastPos, currentPos).trim());
+            if (currentPos != -1) {
+                int value = Integer.parseInt(source.substring(lastPos, currentPos).trim());
 
-            switch (token) {
-                case WEEK_TOKEN -> minutes += value * DAYS_IN_A_WEEK * HOURS_IN_A_DAY * MINUTES_IN_A_HOURS;
-                case DAY_TOKEN -> minutes += value * HOURS_IN_A_DAY * MINUTES_IN_A_HOURS;
-                case HOUR_TOKEN -> minutes += value * MINUTES_IN_A_HOURS;
-                case MINUTES_TOKEN -> minutes += value;
+                switch (token) {
+                    case WEEK_TOKEN -> minutes += value * DAYS_IN_A_WEEK * HOURS_IN_A_DAY * MINUTES_IN_A_HOURS;
+                    case DAY_TOKEN -> minutes += value * HOURS_IN_A_DAY * MINUTES_IN_A_HOURS;
+                    case HOUR_TOKEN -> minutes += value * MINUTES_IN_A_HOURS;
+                    case MINUTES_TOKEN -> minutes += value;
+                }
+                lastPos = currentPos + 1;
             }
-            lastPos = currentPos + 1;
         }
 
         return Duration.ofMinutes(minutes);

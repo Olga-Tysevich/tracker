@@ -28,7 +28,7 @@ class AuthControllerTest extends BaseTest {
                 HttpStatus.OK.value(),
                 MockConstants.SCHEME_SOURCE_PATH + MockConstants.LOGGED_USER_SCHEME,
                 userMapper.toValidUserLoginDTO(user),
-                null
+                USER_CRED
         );
     }
 
@@ -39,7 +39,7 @@ class AuthControllerTest extends BaseTest {
                 LOGIN_ENDPOINT,
                 HttpStatus.NOT_FOUND.value(),
                 userMapper.toInvalidUserLoginDTO(user),
-                null
+                USER_CRED
         );
     }
 
@@ -51,7 +51,7 @@ class AuthControllerTest extends BaseTest {
                 LOGIN_ENDPOINT,
                 HttpStatus.FORBIDDEN.value(),
                 userMapper.toInvalidUserLoginDTO(user),
-                null
+                USER_CRED
         );
     }
 
@@ -100,7 +100,7 @@ class AuthControllerTest extends BaseTest {
     }
 
     static Stream<Arguments> cases() {
-        return MockUtils.generateUsers(MockConstants.NUMBER_OF_OBJECTS).stream()
+        return MockUtils.generateUsers(MockConstants.DEFAULT_NUMBER_OF_OBJECTS).stream()
                 .map(Arguments::of);
     }
 }

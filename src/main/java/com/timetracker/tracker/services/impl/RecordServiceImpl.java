@@ -2,6 +2,7 @@ package com.timetracker.tracker.services.impl;
 
 import com.timetracker.tracker.entities.Record;
 import com.timetracker.tracker.exceptions.NotFoundException;
+import com.timetracker.tracker.mappers.RecordMapper;
 import com.timetracker.tracker.repositories.RecordRepository;
 import com.timetracker.tracker.repositories.specifications.RecordFilter;
 import com.timetracker.tracker.repositories.specifications.RecordSpecification;
@@ -41,7 +42,7 @@ public class RecordServiceImpl implements RecordService {
      */
     @Override
     public void createRecord(Record record) {
-        checkRecord(record);
+        record = checkRecord(record);
         recordRepository.save(record);
     }
 
@@ -92,13 +93,14 @@ public class RecordServiceImpl implements RecordService {
      * @param record the record to check.
      * @see com.timetracker.tracker.entities.Record
      */
-    private void checkRecord(Record record) {
+    private Record checkRecord(Record record) {
         Record exist = recordRepository.getByStartDateAndProjectIdAndUserId(record.getStartDate(),
                 record.getProject().getId(), record.getUser().getId());
         if (Objects.isNull(exist)) {
-            return;
+            return record;
         }
-        exist.setStartDate(record.getStartDate());
         exist.setDuration(record.getDuration());
+        exist.setEndDate(RecordMapper.INSTANCE.getEndDate(record.getStartDate(), record.getDuration()));
+        return exist;
     }
 }
