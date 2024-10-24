@@ -4,9 +4,9 @@
 ## 1. Клонировать репозиторий
 
 ```dtd
-git clone git@github.com:Olga-Tysevich/tracker.git
+git clone -b new_version git@github.com:Olga-Tysevich/tracker.git
 ```
-### Переключить ветку проекта new_version!!!
+### Убедиться что ветка проекта new_version!!!
 
 Создать в каталоге tracker файл **.env** на основе **.env-example**
 Сгенерировать jwt ключи (например с помощью - https://jwt-keys.21no.de/),
